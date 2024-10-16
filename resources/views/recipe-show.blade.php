@@ -171,6 +171,9 @@
 </head>
 
 <body>
+    @if (Auth::user()->role == 'user')
+        <a href="{{ url('home') }}" class="btn btn-primary btn-3d"><i class="fa fa-arrow-left"></i></a>
+    @endif
     <div class="container recipe-details">
         <h2 class="text-center">Recipe Details</h2>
         <br><br><br>
@@ -265,9 +268,7 @@
             </div>
         </div>
         <br><br>
-        @if (Auth::user()->role == 'user')
-            <a href="{{ url('home') }}" class="btn btn-primary btn-3d">Back to Home Page</a>
-        @endif
+
 
     </div>
 

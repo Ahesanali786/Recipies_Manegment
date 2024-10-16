@@ -217,10 +217,10 @@
     <div class="container profile-container">
         <div class="profile-header">
             <img src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
-                alt="Profile Image" class="profile-image">
+                 alt="Profile Image" class="profile-image">
             <div class="profile-info">
                 <h1>{{ $user->name }}</h1>
-                <p>{{ $user->name }}</p>
+                <p class="user-bio">{{ $user->bio ? $user->bio : 'No bio available.' }}</p> <!-- Display the user's bio -->
                 <div class="follow-section">
                     <div>
                         <p class="count">{{ $user->recipes()->count() }}</p>
@@ -238,6 +238,7 @@
                 <button class="btn btn-follow mt-3">Follow</button>
             </div>
         </div>
+
 
         <!-- Add Favorite Recipes Button -->
         <div class="text-center mt-4">

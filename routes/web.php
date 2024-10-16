@@ -47,7 +47,7 @@ Route::view('profile-edit', 'profile-edit');
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/dashboard', [AdminController::class, 'dashboard']);
 
-
+Route::get('/recipes', [RecipeController::class, 'addrcp'])->name('recipes.index');
 Route::get('/recipe-add', [RecipeController::class, 'index']);
 Route::post('/recipe-add', [RecipeController::class, 'addRecipe']);
 Route::get('/recipe-list', [RecipeController::class, 'showList']);
@@ -95,7 +95,7 @@ Route::get('profile/{id}', [UserController::class, 'showProfile']);
 
 // reviews
 Route::get('/show-reviews/{id}', [RecipeController::class, 'showreviews']);
-Route::get('/admin/reviews', [RecipeController::class, 'showAdminReviews'])->name('admin.reviews');
+// Route::get('/admin/reviews', [RecipeController::class, 'showAdminReviews'])->name('admin.reviews');
 
 
 
