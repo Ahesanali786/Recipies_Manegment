@@ -50,11 +50,14 @@ Route::get('/dashboard', [AdminController::class, 'dashboard']);
 Route::get('/recipes', [RecipeController::class, 'addrcp'])->name('recipes.index');
 Route::get('/recipe-add', [RecipeController::class, 'index']);
 Route::post('/recipe-add', [RecipeController::class, 'addRecipe']);
-Route::get('/recipe-list', [RecipeController::class, 'showList']);
+// Route::get('/recipe-list', [RecipeController::class, 'showList']);
+Route::get('/recipe-list', [RecipeController::class, 'showList'])->name('recipes.list');
 
 Route::get('/recipe-edit/{id}', [RecipeController::class, 'editRecipe']);
 Route::post('/recipe-edit/{id}', [RecipeController::class, 'updateRecipe']);
 Route::get('/recipe-delete/{id}', [RecipeController::class, 'deleteRecipe']);
+// Route::delete('/recipe-delete/{id}', [RecipeController::class, 'deleteRecipe']);
+
 
 
 Route::post('/category-add', [CategoryController::class, 'addCategory']);
@@ -112,8 +115,8 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
 
 
-Route::post('/follow/{id}',[UserController::class ,'follow'])->name('follow');
-Route::post('/unfollow/{id}', [UserController::class ,'unfollow'])->name('unfollow');
+Route::post('/follow/{id}', [UserController::class, 'follow'])->name('follow');
+Route::post('/unfollow/{id}', [UserController::class, 'unfollow'])->name('unfollow');
 
 
 

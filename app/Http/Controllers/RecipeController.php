@@ -8,6 +8,7 @@ use App\Models\Ingredient;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -21,10 +22,36 @@ class RecipeController extends Controller
 
         return view('recipe-add', compact('categories'));
     }
-    public function showList()
+    // public function showList()
+    // {
+    //     $recipes = Recipe::all();
+    //     return view('recipe-list', compact('recipes'));
+    // }
+
+    public function showList(Request $request)
     {
-        $recipes = Recipe::all();
-        return view('recipe-list', compact('recipes'));
+        if ($request->ajax()) {
+            $recipes = Recipe::with('category')->select('recipes.*');
+            return DataTables::of($recipes)
+                ->addColumn('action', function ($row) {
+                    if (Auth::check() && Auth::user()->role == 'admin') {
+                        $editBtn = '<a href="/recipe-edit/' . $row->id . '"><i class="fas fa-edit" style="color: rgb(5, 138, 129); font-size:20px;"></i></a>';
+                        $deleteBtn = '<a href="javascript:void(0)" data-id="' . $row->id . '" class="delete-btn"><i class="fas fa-trash" style="color: red; font-size:20px;"></i></a>';
+                        return $editBtn . ' ' . $deleteBtn;
+                    }
+                    return '';
+                })
+                ->addColumn('select', function ($row) {
+                    if (Auth::check() && Auth::user()->role == 'admin') {
+                        return '<input type="checkbox" name="selected[]" value="' . $row->id . '" class="selectRecipe">';
+                    }
+                    return '';
+                })
+                ->rawColumns(['action', 'select'])
+                ->make(true);
+        }
+
+        return view('recipe-list');
     }
 
     public function addRecipe(Request $request)
@@ -125,17 +152,55 @@ class RecipeController extends Controller
     }
 
 
-    public function deleteRecipe($id)
+    // public function deleteRecipe($id)
+    // {
+    //     $recipe = Recipe::find($id);
+    //     $recipe->delete(); // This will automatically delete ingredients due to cascade delete
+
+    //     if (Auth::user()->role == 'admin') {
+    //         return redirect('recipe-list')->with('success', 'Recipe Delete successfully.');
+    //     } else {
+    //         return redirect('profile')->with('success', 'Recipe Delete successfully.');
+    //     }
+    // }
+    public function deleteRecipe($id, Request $request)
     {
         $recipe = Recipe::find($id);
-        $recipe->delete(); // This will automatically delete ingredients due to cascade delete
 
-        if (Auth::user()->role == 'admin') {
-            return redirect('recipe-list')->with('success', 'Recipe Delete successfully.');
-        } else {
-            return redirect('profile')->with('success', 'Recipe Delete successfully.');
+        // Check if the recipe exists
+        if (!$recipe) {
+            // Handle recipe not found
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Recipe not found.'], 404);
+            }
+
+            return redirect()->back()->with('error', 'Recipe not found.');
+        }
+
+        try {
+            $recipe->delete(); // This will automatically delete related ingredients if set up correctly
+
+            // Handle redirect for non-AJAX requests
+            if (!$request->ajax()) {
+                if (Auth::user()->role == 'admin') {
+                    return redirect('recipe-list')->with('success', 'Recipe deleted successfully.');
+                } else {
+                    return redirect('profile')->with('success', 'Recipe deleted successfully.');
+                }
+            }
+
+            // Handle AJAX request response
+            return response()->json(['success' => 'Recipe deleted successfully.']);
+        } catch (\Exception $e) {
+            // Handle error during deletion
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Error deleting recipe: ' . $e->getMessage()], 500);
+            }
+
+            return redirect()->back()->with('error', 'Error deleting recipe: ' . $e->getMessage());
         }
     }
+
     public function bulkDelete(Request $request)
     {
         $selected = $request->input('selected');
