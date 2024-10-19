@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         $existcategory = Category::where('name', $request->name)->first();
         if ($existcategory) {
-            return redirect('category-add')->with('error', 'Category already exists.');
+            return redirect('category-add')->with('success', 'Category already exists.');
         }
 
         $category = new Category();
@@ -40,14 +40,29 @@ class CategoryController extends Controller
             return redirect('category-list')->with('success', 'Category updated successfully.');
         } catch (\Exception $e) {
             dd($e);
-            return redirect('category-edit')->with('error', 'Failed to update category.');
+            return redirect('category-edit')->with('success', 'Failed to update category.');
         }
     }
 
     public function delete($id)
     {
+        // Find the category by ID
         $category = Category::find($id);
+
+        // Check if the category exists
+        if (!$category) {
+            return redirect('category-list')->with('success', 'Category not found.');
+        }
+
+        // Check if the category has associated recipes
+        if ($category->recipes()->count() > 0) {
+            return redirect('category-list')->with('success', 'Cannot delete category with associated recipes.');
+        }
+
+        // Delete the category
         $category->delete();
+
+        // Redirect with success message
         return redirect('category-list')->with('success', 'Category deleted successfully.');
     }
 

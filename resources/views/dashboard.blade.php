@@ -22,7 +22,12 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
-    @stack('styles')
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .chat{
+        }
+    </style>
 </head>
 
 <body class="body">
@@ -52,7 +57,7 @@
                             <ul class="menu-list">
                                 <li class="menu-item">
                                     <a href="home" class="">
-                                        <div class="icon"><i class="icon-grid"></i></div>
+                                        <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
                                         <div class="text">Dashboard</div>
                                     </a>
                                 </li>
@@ -62,35 +67,39 @@
                             <ul class="menu-list">
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="icon-shopping-cart"></i></div>
-                                        <div class="text">Recipies</div>
+                                        <div class="icon"><i class="fas fa-utensils"></i></div>
+                                        <div class="text">Recipes</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
                                             <a href="recipe-add" class="">
-                                                <div class="text">Add Recipies</div>
+                                                <div class="icon"><i class="fas fa-plus-circle"></i></div>
+                                                <div class="text">Add Recipes</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
                                             <a href="recipe-list" class="">
-                                                <div class="text">Recipies List</div>
+                                                <div class="icon"><i class="fas fa-list"></i></div>
+                                                <div class="text">Recipes List</div>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="icon-layers"></i></div>
+                                        <div class="icon"><i class="fas fa-tags"></i></div>
                                         <div class="text">Category</div>
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
                                             <a href="category-add" class="">
+                                                <div class="icon"><i class="fas fa-plus"></i></div>
                                                 <div class="text">New Category</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
                                             <a href="category-list" class="">
+                                                <div class="icon"><i class="fas fa-th-list"></i></div>
                                                 <div class="text">Categories List</div>
                                             </a>
                                         </li>
@@ -99,20 +108,21 @@
 
                                 <li class="menu-item">
                                     <a href="review" class="">
-                                        <div class="icon"><i class="icon-user"></i></div>
+                                        <div class="icon"><i class="fas fa-star"></i></div>
                                         <div class="text">Reviews</div>
                                     </a>
                                 </li>
 
                                 <li class="menu-item">
                                     <a href="logout" class="">
-                                        <div class="icon"><i class="icon-settings"></i></div>
+                                        <div class="icon"><i class="fas fa-sign-out-alt"></i></div>
                                         <div class="text">Logout</div>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
                 </div>
                 <div class="section-content-right">
 
@@ -212,223 +222,138 @@
                         </div>
                     </div>
                     <div class="main-content">
-
                         <div class="main-content-inner">
-
                             <div class="main-content-wrap">
                                 <div class="tf-section-2 mb-30">
-                                    <div class="flex gap20 flex-wrap-mobile">
-                                        <div class="w-half">
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
+                                    <div class="flex flex-wrap-mobile">
+                                        <div class="w-full"> <!-- Full width for vertical stacking -->
+                                            <div class="flex flex-col gap20">
+                                                <!-- Total Users Card -->
+                                                <div
+                                                    class="wg-chart-default mb-20 p-4 border border-gray-300 rounded-lg shadow-md flex justify-between items-center">
                                                     <div class="flex items-center gap14">
                                                         <div class="image ic-bg">
-                                                            <i class="icon-shopping-bag"></i>
+                                                            <i class="fas fa-users text-gray-700"></i>
+                                                            <!-- Users icon -->
                                                         </div>
                                                         <div>
-                                                            <div class="body-text mb-2">Total Recipies</div>
-                                                            <h4>3</h4>
+                                                            <div class="body-text mb-2">Total Users</div>
+                                                            <h4>{{ $users }}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
+                                                <!-- Total Category Card -->
+                                                <div
+                                                    class="wg-chart-default mb-20 p-4 border border-gray-300 rounded-lg shadow-md flex justify-between items-center">
                                                     <div class="flex items-center gap14">
                                                         <div class="image ic-bg">
-                                                            <i class="icon-dollar-sign"></i>
+                                                            <i class="fas fa-list text-gray-700"></i>
+                                                            <!-- Category icon -->
                                                         </div>
                                                         <div>
-                                                            <div class="body-text mb-2">Total </div>
-                                                            <h4>481.34</h4>
+                                                            <div class="body-text mb-2">Total Categories</div>
+                                                            <h4>{{ $category }}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
+                                                <!-- Total Recipes Card -->
+                                                <div
+                                                    class="wg-chart-default mb-20 p-4 border border-gray-300 rounded-lg shadow-md flex justify-between items-center">
                                                     <div class="flex items-center gap14">
                                                         <div class="image ic-bg">
-                                                            <i class="icon-shopping-bag"></i>
+                                                            <i class="fas fa-utensils text-gray-700"></i>
+                                                            <!-- Recipe icon -->
                                                         </div>
                                                         <div>
-                                                            <div class="body-text mb-2">Pending Orders</div>
-                                                            <h4>3</h4>
+                                                            <div class="body-text mb-2">Total Recipes</div>
+                                                            <h4>{{ $recipes }}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default">
-                                                <div class="flex items-center justify-between">
+                                                <!-- Total Reviews Card -->
+                                                <div
+                                                    class="wg-chart-default mb-20 p-4 border border-gray-300 rounded-lg shadow-md flex justify-between items-center">
                                                     <div class="flex items-center gap14">
                                                         <div class="image ic-bg">
-                                                            <i class="icon-dollar-sign"></i>
+                                                            <i class="fas fa-star text-gray-700"></i>
+                                                            <!-- Review icon -->
                                                         </div>
                                                         <div>
-                                                            <div class="body-text mb-2">Pending Orders Amount</div>
-                                                            <h4>481.34</h4>
+                                                            <div class="body-text mb-2">Total Reviews</div>
+                                                            <h4>{{ $reviews }}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="w-half">
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap14">
-                                                        <div class="image ic-bg">
-                                                            <i class="icon-shopping-bag"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="body-text mb-2">Delivered Orders</div>
-                                                            <h4>0</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap14">
-                                                        <div class="image ic-bg">
-                                                            <i class="icon-dollar-sign"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="body-text mb-2">Delivered Orders Amount</div>
-                                                            <h4>0.00</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default mb-20">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap14">
-                                                        <div class="image ic-bg">
-                                                            <i class="icon-shopping-bag"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="body-text mb-2">Canceled Orders</div>
-                                                            <h4>0</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="wg-chart-default">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="flex items-center gap14">
-                                                        <div class="image ic-bg">
-                                                            <i class="icon-dollar-sign"></i>
-                                                        </div>
-                                                        <div>
-                                                            <div class="body-text mb-2">Canceled Orders Amount</div>
-                                                            <h4>0.00</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="wg-box">
-                                        <div class="flex items-center justify-between">
-                                            <h5>Earnings revenue</h5>
-                                            <div class="dropdown default">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <span class="icon-more"><i
-                                                            class="icon-more-horizontal"></i></span>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li>
-                                                        <a href="javascript:void(0);">This Week</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);">Last Week</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-wrap gap40">
-                                            <div>
-                                                <div class="mb-2">
-                                                    <div class="block-legend">
-                                                        <div class="dot t1"></div>
-                                                        <div class="text-tiny">Revenue</div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap10">
-                                                    <h4>$37,802</h4>
-                                                    <div class="box-icon-trending up">
-                                                        <i class="icon-trending-up"></i>
-                                                        <div class="body-title number">0.56%</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="mb-2">
-                                                    <div class="block-legend">
-                                                        <div class="dot t2"></div>
-                                                        <div class="text-tiny">Order</div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex items-center gap10">
-                                                    <h4>$28,305</h4>
-                                                    <div class="box-icon-trending up">
-                                                        <i class="icon-trending-up"></i>
-                                                        <div class="body-title number">0.56%</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="line-chart-8"></div>
-                                    </div>
-
-                                </div>
-                                <div class="tf-section mb-30">
-
-                                    <div class="wg-box">
-                                        <div class="flex items-center justify-between">
-                                            <h5>Recent orders</h5>
-                                            <div class="dropdown default">
-                                                <a class="btn btn-secondary dropdown-toggle" href="#">
-                                                    <span class="view-all">View all</span>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
+                    </div>
 
 
-                        <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+                    <!-- Chart Section -->
+                    <div class="chat">
+                        <div class="wg-box border border-gray-300 rounded-lg shadow-md p-6 bg-white">
+                            <h5 class="text-lg font-semibold mb-4 text-center text-gray-800">Statistics Overview</h5>
+                            <div class="relative" style="height: 300px;">
+                                <canvas id="myChart" style="max-width: 100%; height: 100%; margin-left: 40%"></canvas>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <span class="text-sm text-gray-600">Data updated as of
+                                    <strong>{{ date('Y-m-d') }}</strong></span>
+                            </div>
                         </div>
                     </div>
 
                 </div>
+                <div class="bottom-page">
+                    <div class="body-text" style=" margin-left: 40%">Copyright © 2024 K.AHESANALI All rights reserved </div>
+                </div>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Users', 'Categories', 'Recipes', 'Reviews'],
+                    datasets: [{
+                        label: 'Counts',
+                        data: [{{ $users }}, {{ $category }}, {{ $recipes }},
+                            {{ $reviews }}
+                        ],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 99, 132, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+    </div>
+    </div>
+    </div>
     </div>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -436,116 +361,6 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script>
-        (function($) {
-
-            var tfLineChart = (function() {
-
-                var chartBar = function() {
-
-                    var options = {
-                        series: [{
-                                name: 'Total',
-                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00,
-                                    0.00, 0.00, 0.00
-                                ]
-                            }, {
-                                name: 'Pending',
-                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00,
-                                    0.00, 0.00, 0.00
-                                ]
-                            },
-                            {
-                                name: 'Delivered',
-                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
-                                    0.00, 0.00
-                                ]
-                            }, {
-                                name: 'Canceled',
-                                data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00,
-                                    0.00, 0.00
-                                ]
-                            }
-                        ],
-                        chart: {
-                            type: 'bar',
-                            height: 325,
-                            toolbar: {
-                                show: false,
-                            },
-                        },
-                        plotOptions: {
-                            bar: {
-                                horizontal: false,
-                                columnWidth: '10px',
-                                endingShape: 'rounded'
-                            },
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        legend: {
-                            show: false,
-                        },
-                        colors: ['#2377FC', '#FFA500', '#078407', '#FF0000'],
-                        stroke: {
-                            show: false,
-                        },
-                        xaxis: {
-                            labels: {
-                                style: {
-                                    colors: '#212529',
-                                },
-                            },
-                            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-                                'Oct', 'Nov', 'Dec'
-                            ],
-                        },
-                        yaxis: {
-                            show: false,
-                        },
-                        fill: {
-                            opacity: 1
-                        },
-                        tooltip: {
-                            y: {
-                                formatter: function(val) {
-                                    return "$ " + val + ""
-                                }
-                            }
-                        }
-                    };
-
-                    chart = new ApexCharts(
-                        document.querySelector("#line-chart-8"),
-                        options
-                    );
-                    if ($("#line-chart-8").length > 0) {
-                        chart.render();
-                    }
-                };
-
-                /* Function ============ */
-                return {
-                    init: function() {},
-
-                    load: function() {
-                        chartBar();
-                    },
-                    resize: function() {},
-                };
-            })();
-
-            jQuery(document).ready(function() {});
-
-            jQuery(window).on("load", function() {
-                tfLineChart.load();
-            });
-
-            jQuery(window).on("resize", function() {});
-        })(jQuery);
-    </script>
-    @stack('scripts')
 </body>
 
 </html>

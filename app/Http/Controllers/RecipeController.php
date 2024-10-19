@@ -56,7 +56,29 @@ class RecipeController extends Controller
 
     public function addRecipe(Request $request)
     {
+        // Validate request data
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'preparation_time' => 'required|string',
+            'cooking_time' => 'required|string',
+            'servings' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as necessary
+            'name.*' => 'required|string',
+            'quantity.*' => 'required|integer', // Ensure quantities are required and integers
+        ]);
+
         try {
+            // Check if the recipe with the same title already exists for the logged-in user
+            $existingRecipe = Recipe::where('title', $request->title)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if ($existingRecipe) {
+                return redirect('recipe-add')->with('success', 'You have already added a recipe with this title.');
+            }
+
             $recipe = new Recipe();
             $recipe->title = $request->title;
             $recipe->description = $request->description;
@@ -74,7 +96,7 @@ class RecipeController extends Controller
                 $image->move(public_path('webimg'), $imageName);
                 $recipe->image = $imageName;
             }
-            // dd($recipe->image);
+
             $recipe->save();
 
             // Add Ingredients
@@ -93,9 +115,10 @@ class RecipeController extends Controller
 
             return redirect('recipe-list')->with('success', 'Recipe added successfully.');
         } catch (\Exception $e) {
-            return redirect('recipe-add')->with('error', 'Failed to add recipe.');
+            return redirect('recipe-add')->with('error', 'Failed to add recipe: ' . $e->getMessage());
         }
     }
+
 
 
     public function editRecipe($id)
@@ -235,6 +258,13 @@ class RecipeController extends Controller
     public function homeRecipe(Request $request)
     {
         try {
+            $existingRecipe = Recipe::where('title', $request->title)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if ($existingRecipe) {
+                return redirect('recipe-add')->with('success', 'You have already added a recipe with this title.');
+            }
             $recipe = new Recipe();
             $recipe->title = $request->title;
             $recipe->description = $request->description;
@@ -307,5 +337,21 @@ class RecipeController extends Controller
         $favoriteRecipes = Auth::user()->favoritedRecipes; // Adjust this line based on your relationship name
 
         return view('favorite-recipes', compact('favoriteRecipes'));
+    }
+    public function explore(Request $request)
+    {
+        $search = $request->input('search');
+        $categories = Category::with('recipes.user', 'recipes.favorites')->get();
+
+        // If you want to filter recipes based on search
+        if ($search) {
+            foreach ($categories as $category) {
+                $category->recipes = $category->recipes->filter(function ($recipe) use ($search) {
+                    return str_contains($recipe->title, $search);
+                });
+            }
+        }
+
+        return view('explore', compact('categories'));
     }
 }

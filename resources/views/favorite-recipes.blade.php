@@ -67,7 +67,7 @@
     <div class="container mt-5">
         <h1>Your Favorite Recipes</h1>
         <div class="mb-3">
-            <a href="/home" class="btn btn-secondary"><i class="fa fa-home"></i> Back to Home</a>
+            <a href="/profile" class="btn btn-secondary"><i class="fa fa-home"></i> Back to Home</a>
         </div>
 
         @if ($favoriteRecipes->isEmpty())

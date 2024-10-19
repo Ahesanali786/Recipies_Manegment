@@ -29,6 +29,8 @@ Route::view('user/user-show', 'user/user-show');
 Route::view('admin_review', 'admin_review');
 Route::view('user/profile', 'user/profile');
 Route::view('profile-edit', 'profile-edit');
+Route::view('review', 'review');
+Route::view('explore', 'explore');
 
 // Route::middleware([Adminmiddelware::class])->group(function () {
 //     Route::post('/register', [RegisterController::class, 'register']);
@@ -98,7 +100,10 @@ Route::get('profile/{id}', [UserController::class, 'showProfile']);
 
 // reviews
 Route::get('/show-reviews/{id}', [RecipeController::class, 'showreviews']);
-// Route::get('/admin/reviews', [RecipeController::class, 'showAdminReviews'])->name('admin.reviews');
+Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
+Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
+Route::get('/review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+Route::get('/review/data', [ReviewController::class, 'getReviews'])->name('review.data');
 
 
 
@@ -125,3 +130,7 @@ Route::get('/profile-edit/{id}', [profileController::class, 'edit']);
 
 // Route to handle the profile update
 Route::post('/profile-edit/{id}', [profileController::class, 'update']);
+
+
+Route::get('/explore', [RecipeController::class, 'explore'])->name('explore.recipes');
+

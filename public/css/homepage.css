@@ -1,0 +1,616 @@
+.single-best-receipe-area {
+    background: white;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.single-best-receipe-area:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.recipe-image {
+    height: 200px;
+    /* Set a fixed height for uniformity */
+    overflow: hidden;
+    /* Hide overflow to maintain clean edges */
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cover the area without distortion */
+}
+
+.no-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #999;
+    text-align: center;
+}
+
+.recipe-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.recipe-user {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.ratings {
+    margin: 5px 0;
+}
+
+.average-rating {
+    font-size: 0.9rem;
+    color: #007bff;
+    /* Bootstrap primary color */
+}
+
+.row {
+    margin: 0;
+    /* Remove default margin */
+}
+
+.single-small-receipe-area {
+    background-color: #fff;
+    /* White background for cards */
+    border-radius: 8px;
+    /* Rounded corners */
+    overflow: hidden;
+    /* Prevent content overflow */
+    transition: transform 0.3s;
+    /* Smooth transform effect */
+}
+
+.single-small-receipe-area:hover {
+    transform: scale(1.02);
+    /* Scale effect on hover */
+}
+
+.receipe-thumb img {
+    width: 100%;
+    /* Responsive image */
+    height: auto;
+    /* Maintain aspect ratio */
+}
+
+.no-image {
+    display: flex;
+    /* Flexbox for centering */
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    /* Fixed height */
+    background-color: #f2f2f2;
+    /* Light gray background */
+    color: #999;
+    /* Gray text */
+    font-size: 16px;
+    /* Font size */
+}
+
+.receipe-content {
+    display: flex;
+    flex-direction: column;
+    /* Column layout for content */
+}
+
+.recipe-title {
+    font-size: 1.25rem;
+    /* Larger font for title */
+    color: #007bff;
+    /* Blue color for title */
+    text-decoration: none;
+    /* No underline */
+    transition: color 0.3s;
+    /* Smooth color transition */
+}
+
+.recipe-title:hover {
+    color: #0056b3;
+    /* Darker blue on hover */
+}
+
+.ratings {
+    margin-top: 10px;
+    /* Spacing above ratings */
+}
+
+.average-rating {
+    font-size: 0.9rem;
+    /* Smaller font size */
+    color: #666;
+    /* Dark gray text */
+}
+
+.category-name {
+    margin-top: 10px;
+    /* Spacing above category */
+    font-size: 0.9rem;
+    /* Smaller font size */
+    color: #777;
+    /* Gray text */
+}
+
+.favorite-icon:hover {
+    transform: scale(1.1);
+    /* Slightly increase size on hover */
+    transition: transform 0.2s ease;
+    /* Smooth transition effect */
+}
+
+.favorite-count {
+    margin-left: 8px;
+    /* Space between icon and count */
+}
+
+.top-social-info {
+    position: relative;
+    /* Relative positioning for dropdown */
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    /* Center align the text and image */
+    color: #343a40;
+    /* Dark color for text */
+    font-weight: 600;
+    /* Bold text */
+}
+
+.dropdown-toggle img {
+    transition: transform 0.2s;
+    /* Image zoom effect */
+}
+
+.dropdown-toggle:hover img {
+    transform: scale(1.1);
+    /* Slightly enlarge the image on hover */
+}
+
+.dropdown-menu {
+    border-radius: 0.5rem;
+    /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Subtle shadow for dropdown */
+    padding: 0.5rem 0;
+    /* Padding for dropdown items */
+}
+
+.dropdown-item {
+    transition: background-color 0.3s, color 0.3s;
+    /* Smooth transition */
+    color: #495057;
+    /* Dark text color */
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    /* Space between icon and text */
+    color: #6c757d;
+    /* Default icon color */
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    /* Light background on hover */
+    color: #343a40;
+    /* Darker text on hover */
+}
+
+.dropdown-divider {
+    border-top: 1px solid #e9ecef;
+    /* Divider color */
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #f8d7da;
+    /* Light red background for Logout */
+    color: #721c24;
+    /* Darker text color for Logout */
+}
+
+/* Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f3f4f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+.section-heading h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Instagram-like Recipe Card */
+.single-best-receipe-area {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.single-best-receipe-area:hover {
+    transform: scale(1.02);
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.recipe-card-content {
+    padding: 20px;
+}
+
+.recipe-title a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-decoration: none;
+}
+
+.recipe-title a:hover {
+    color: #ff6f61;
+}
+
+/* User Info Section */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #ff6f61;
+    object-fit: cover;
+}
+
+.user-info a {
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+}
+
+.user-info a:hover {
+    color: #ff6f61;
+}
+
+/* Ratings Section */
+.ratings i {
+    color: #ffcc00;
+}
+
+.favorite-btn {
+    color: #ff6f61;
+}
+
+.favorite-btn i {
+    margin-right: 5px;
+}
+
+.favorites-count {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Button */
+.btn-view-all {
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .recipe-image img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .recipe-image img {
+        height: 180px;
+    }
+
+    .recipe-title a {
+        font-size: 1rem;
+    }
+}
+
+.btn-share {
+    background-color: #007bff;
+    color: white;
+}
+
+.share-buttons {
+    margin-top: 10px;
+}
+
+.btn-whatsapp {
+    background-color: #25d366;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-whatsapp i {
+    margin-right: 5px;
+}
+
+.favorite-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    /* Adjust size as needed */
+    transition: transform 0.3s ease;
+    /* Smooth scale transition */
+    outline: none;
+    /* Remove outline */
+}
+
+.favorite-btn i {
+    color: #555;
+    /* Default icon color */
+    transition: color 0.3s ease, transform 0.3s ease;
+    /* Smooth color and scale transition */
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+    /* Scale effect on hover */
+}
+
+.favorite-btn.liked i {
+    color: #ff4b5c;
+    /* Color when liked (pink) */
+    animation: heart-animation 0.5s;
+    /* Trigger animation when liked */
+}
+
+@keyframes heart-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.3);
+        /* Scale up the heart */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Return to original size */
+    }
+}
+
+body.dark-mode {
+    background: linear-gradient(135deg, #0f0f0e, #e00707, #05c642);
+    color: #ffffff;
+}
+
+.header-area.dark-mode {
+    background-color: #1abcc2;
+}
+
+.top-header-area.dark-mode {
+    background-color: #1abcc2;
+}
+
+.breaking-news.dark-mode a {
+    color: #ffffff;
+}
+
+.dropdown-menu {
+    background-color: #ffffff;
+    color: #1abcc2;
+}
+
+.dark-mode .dropdown-menu {
+    background-color: #1abcc2;
+    color: #ffffff;
+}
+
+.btn-light {
+    background-color: #ffffff;
+    color: #1abcc2;
+    border: none;
+}
+
+.dark-mode .btn-light {
+    background-color: #1abcc2;
+    color: #ffffff;
+}
+
+.classy-menu {
+    margin-left: 20px;
+    /* Adjust margin for spacing */
+}
+
+.navbar-nav {
+    display: flex;
+    /* Flexbox for horizontal layout */
+}
+
+.nav-item {
+    list-style: none;
+    /* Remove bullet points */
+}
+
+.btn-explore {
+    padding: 10px 20px;
+    /* Padding for button */
+    border-radius: 25px;
+    /* Rounded corners */
+    background-color: #ff6f61;
+    /* Button color */
+    color: white;
+    /* Text color */
+    text-transform: uppercase;
+    /* Uppercase text */
+    font-weight: bold;
+    /* Bold text */
+    transition: background-color 0.3s, transform 0.3s;
+    /* Smooth transition */
+    text-decoration: none;
+    /* Remove underline */
+}
+
+.btn-explore:hover {
+    background-color: #ff836e;
+    /* Darker shade on hover */
+    transform: translateY(-2px);
+    /* Lift effect on hover */
+}
+
+/* Optional: Add some spacing between the button and other items */
+.classy-menu ul {
+    margin: 0;
+    /* Reset margin */
+    padding: 0;
+    /* Reset padding */
+}
+
+.btn-explore {
+    display: inline-block;
+    /* Make it inline-block for proper padding */
+    padding: 10px 20px;
+    /* Vertical and horizontal padding */
+    font-size: 16px;
+    /* Font size */
+    font-weight: 500;
+    /* Font weight */
+    color: #fff;
+    /* Text color */
+    background-color: #ff6f61;
+    /* Background color */
+    border: none;
+    /* No border */
+    border-radius: 25px;
+    /* Rounded corners */
+    text-align: center;
+    /* Center the text */
+    text-decoration: none;
+    /* Remove underline */
+    transition: background-color 0.3s, transform 0.2s;
+    /* Smooth transitions */
+}
+
+.btn-explore:hover {
+    background-color: #ff836e;
+    /* Darker shade on hover */
+    transform: translateY(-2px);
+    /* Lift effect on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Shadow on hover */
+}
+
+#rcp {
+    font-family: "Poppins", sans-serif;
+    /* Modern clean font */
+    font-size: 2.5rem;
+    /* Larger size for emphasis */
+    font-weight: 700;
+    /* Bold weight for strong heading */
+    color: #fff;
+    /* White text for contrast */
+    text-align: center;
+    /* Center-align the text */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    /* Gradient background */
+    padding: 15px 20px;
+    /* Spacing around the text */
+    border-radius: 10px;
+    /* Rounded corners for a modern look */
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow for depth */
+    text-transform: uppercase;
+    /* Makes the text uppercase */
+    letter-spacing: 2px;
+    /* Adds spacing between letters */
+    display: inline-block;
+    /* Keeps the width limited to the text */
+    margin: 20px auto;
+    /* Adds space around the heading */
+}
+
+#rcp::before {
+    content: "🍽️";
+    /* Adds a decorative icon before the text */
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
+#rcp::after {
+    content: "🍴";
+    /* Adds a decorative icon after the text */
+    margin-left: 10px;
+    font-size: 1.5rem;
+}
+
+.explore-more {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+    /* Darker color for the text */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 5%;
+    /* Align to the left side */
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.explore-more i {
+    font-size: 1.5rem;
+    margin-right: 8px;
+    color: #ff7e5f;
+    /* Matches the gradient color for consistency */
+    transition: color 0.3s ease;
+}
+
+.explore-more:hover i {
+    color: #feb47b;
+    /* Changes color on hover */
+}
+
+.explore-more:hover {
+    color: #ff7e5f;
+    /* Text color change on hover */
+}

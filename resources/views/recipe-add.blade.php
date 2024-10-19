@@ -11,47 +11,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
-            background: linear-gradient(to right, #f0f0f0, #ffffff);
+            background: #f8f9fa;
             padding: 30px;
         }
 
         h2 {
-            color: #333;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #343a40;
             font-weight: bold;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .container {
-            background-color: #fff;
+            background-color: #ffffff;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         label {
             font-weight: 600;
-            color: #555;
+            color: #495057;
         }
 
         .form-control {
             border-radius: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
         }
 
         .form-control:focus {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
         .btn-primary,
@@ -84,14 +83,6 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .fa-plus {
-            color: #fff;
-        }
-
-        .fa-trash {
-            color: #fff;
-        }
-
         /* File input */
         input[type="file"] {
             transition: all 0.3s ease;
@@ -101,6 +92,7 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -110,75 +102,92 @@
 </head>
 
 <body>
+    @if (session('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-right',
+                iconColor: 'green',
+                customClass: {
+                    popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('success') }}"
+            });
+        </script>
+    @endif
     <div class="container">
         <h2 class="text-center">Add Recipe</h2>
 
-        @if (Auth::user()->role == 'admin')
-            <form action="recipe-add" method="POST" enctype="multipart/form-data">
-        @endif
-        @if (Auth::user()->role == 'user')
-            <form action="home" method="POST" enctype="multipart/form-data">
-        @endif
+        <form action="{{ Auth::user()->role == 'admin' ? 'recipe-add' : 'home' }}" method="POST"
+            enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
 
-        @csrf
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
-        </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-        </div>
+            <div class="form-group">
+                <label for="preparation_time">Preparation Time (minutes)</label>
+                <input type="number" class="form-control" id="preparation_time" name="preparation_time" required>
+            </div>
 
-        <div class="form-group">
-            <label for="preparation_time">Preparation Time (minutes)</label>
-            <input type="number" class="form-control" id="preparation_time" name="preparation_time" required>
-        </div>
+            <div class="form-group">
+                <label for="cooking_time">Cooking Time (minutes)</label>
+                <input type="number" class="form-control" id="cooking_time" name="cooking_time" required>
+            </div>
 
-        <div class="form-group">
-            <label for="cooking_time">Cooking Time (minutes)</label>
-            <input type="number" class="form-control" id="cooking_time" name="cooking_time" required>
-        </div>
+            <div class="form-group">
+                <label for="servings">Servings</label>
+                <input type="number" class="form-control" id="servings" name="servings" required>
+            </div>
 
-        <div class="form-group">
-            <label for="servings">Servings</label>
-            <input type="number" class="form-control" id="servings" name="servings" required>
-        </div>
+            <div class="form-group">
+                <label for="category_id">Category</label>
+                <select name="category_id" class="form-control" required>
+                    <option value="">Select a category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="category_id">Category</label>
-            <select name="category_id" class="form-control" required>
-                <option value="">Select a category</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" name="image" id="image" accept="image/*">
+            </div>
 
-        <div class="mb-3">
-            <label for="image" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" name="image" id="image" accept="image/*">
-        </div>
-
-        <!-- Ingredient Section -->
-        <div id="ingredientContainer">
-            <div class="ingredient-group row mb-3">
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="name[]" placeholder="Ingredient Name" required>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="quantity[]" placeholder="Quantity (e.g., 200g)" required>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-success add-more">
-                        <i class="fa fa-plus"></i> Add More
-                    </button>
+            <!-- Ingredient Section -->
+            <div id="ingredientContainer">
+                <div class="ingredient-group row mb-3">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="name[]" placeholder="Ingredient Name"
+                            required>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="quantity[]" placeholder="Quantity (e.g., 200g)"
+                            required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success add-more">
+                            <i class="fa fa-plus"></i> Add More
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <button type="submit" class="btn btn-primary btn-block mt-4">Add Recipe</button>
+            <button type="submit" class="btn btn-primary btn-block mt-4">Add Recipe</button>
         </form>
     </div>
 
@@ -188,9 +197,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Add more ingredients functionality
-            $('.add-more').on('click', function () {
+            $('.add-more').on('click', function() {
                 var newIngredientRow = `
                     <div class="ingredient-group row mb-3">
                         <div class="col-md-5">
@@ -207,7 +216,7 @@
             });
 
             // Remove ingredient functionality
-            $(document).on('click', '.remove-ingredient', function () {
+            $(document).on('click', '.remove-ingredient', function() {
                 $(this).closest('.ingredient-group').remove();
             });
         });

@@ -10,6 +10,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #1abcc2, #1d6da8);
+            color: #ffffff;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        .btn-custom {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #ff6b81;
+            color: white;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 5px;
+            border: none;
+            background-color: #ff4757;
+            color: #fff;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #ff6b81;
+        }
+        table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .dropdown-item:hover {
+            background-color: #1d6da8;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,21 +64,23 @@
 
         <div class="text-right mb-3">
             @if (Auth::user()->role == 'admin')
-                <a href="/recipe-add" class="btn btn-success"><i class="fa fa-plus"></i> Add Recipe</a>
+                <a href="/recipe-add" class="btn btn-custom"><i class="fa fa-plus"></i> Add Recipe</a>
             @endif
             <a href="{{ Auth::user()->role == 'admin' ? '/dashboard' : '/home' }}" class="btn btn-secondary">
                 <i class="fa fa-arrow-left"></i> Back
             </a>
             @if (Auth::user()->role == 'admin')
-                <button id="bulkDeleteBtn" class="btn btn-danger" style="display: none;"><i class="fas fa-trash"></i> Delete Selected</button>
+                <button id="bulkDeleteBtn" class="btn btn-danger" style="display: none;">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
             @endif
         </div>
 
         <form id="bulkDeleteForm" action="/recipe-bulk-delete" method="POST">
             @csrf
             @method('DELETE')
-            <table id="recipeTable" class="table table-striped table-bordered">
-                <thead>
+            <table id="recipeTable" class="table table-striped table-bordered bg-light text-dark">
+                <thead class="thead-dark">
                     <tr>
                         @if (Auth::user()->role == 'admin')
                             <th><input type="checkbox" id="selectAll"></th>

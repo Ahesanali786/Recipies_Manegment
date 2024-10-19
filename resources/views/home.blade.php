@@ -9,16 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
     <!-- Title -->
     <title>Delicious - Food Blog Template | Home</title>
-
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('img/core-img/logo.icon.png') }}">
-
-    <!-- Core Stylesheet -->
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('css1/style.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css1/style.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css1/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css1/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css1/owl.carousel.min.css') }}">
@@ -30,387 +24,15 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link rel="stylesheet" href="{{ asset('style.css.map') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Other head elements -->
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-Cwh90AC1yPQHYenCN9YmPvDgA8J6vQQwz6htB6v6G9cpBiy7KZqicMA72xWVz6+q1YNit0F4PjFFaHSz6iw78A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 </head>
-{{-- <style>
 
-</style> --}}
-<style>
-    .single-best-receipe-area {
-        background: white;
-        border-radius: 8px;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .single-best-receipe-area:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .recipe-image {
-        height: 200px;
-        /* Set a fixed height for uniformity */
-        overflow: hidden;
-        /* Hide overflow to maintain clean edges */
-    }
-
-    .recipe-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        /* Cover the area without distortion */
-    }
-
-    .no-image {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        background-color: #f0f0f0;
-        font-weight: bold;
-        color: #999;
-        text-align: center;
-    }
-
-    .recipe-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin: 10px 0;
-    }
-
-    .recipe-user {
-        font-size: 0.9rem;
-        color: #666;
-        margin-bottom: 10px;
-    }
-
-    .ratings {
-        margin: 5px 0;
-    }
-
-    .average-rating {
-        font-size: 0.9rem;
-        color: #007bff;
-        /* Bootstrap primary color */
-    }
-
-    .row {
-        margin: 0;
-        /* Remove default margin */
-    }
-
-    .single-small-receipe-area {
-        background-color: #fff;
-        /* White background for cards */
-        border-radius: 8px;
-        /* Rounded corners */
-        overflow: hidden;
-        /* Prevent content overflow */
-        transition: transform 0.3s;
-        /* Smooth transform effect */
-    }
-
-    .single-small-receipe-area:hover {
-        transform: scale(1.02);
-        /* Scale effect on hover */
-    }
-
-    .receipe-thumb img {
-        width: 100%;
-        /* Responsive image */
-        height: auto;
-        /* Maintain aspect ratio */
-    }
-
-    .no-image {
-        display: flex;
-        /* Flexbox for centering */
-        align-items: center;
-        justify-content: center;
-        height: 150px;
-        /* Fixed height */
-        background-color: #f2f2f2;
-        /* Light gray background */
-        color: #999;
-        /* Gray text */
-        font-size: 16px;
-        /* Font size */
-    }
-
-    .receipe-content {
-        display: flex;
-        flex-direction: column;
-        /* Column layout for content */
-    }
-
-    .recipe-title {
-        font-size: 1.25rem;
-        /* Larger font for title */
-        color: #007bff;
-        /* Blue color for title */
-        text-decoration: none;
-        /* No underline */
-        transition: color 0.3s;
-        /* Smooth color transition */
-    }
-
-    .recipe-title:hover {
-        color: #0056b3;
-        /* Darker blue on hover */
-    }
-
-    .ratings {
-        margin-top: 10px;
-        /* Spacing above ratings */
-    }
-
-    .average-rating {
-        font-size: 0.9rem;
-        /* Smaller font size */
-        color: #666;
-        /* Dark gray text */
-    }
-
-    .category-name {
-        margin-top: 10px;
-        /* Spacing above category */
-        font-size: 0.9rem;
-        /* Smaller font size */
-        color: #777;
-        /* Gray text */
-    }
-
-    .favorite-icon:hover {
-        transform: scale(1.1);
-        /* Slightly increase size on hover */
-        transition: transform 0.2s ease;
-        /* Smooth transition effect */
-    }
-
-    .favorite-count {
-        margin-left: 8px;
-        /* Space between icon and count */
-    }
-
-    .top-social-info {
-        position: relative;
-        /* Relative positioning for dropdown */
-    }
-
-    .dropdown-toggle {
-        display: flex;
-        align-items: center;
-        /* Center align the text and image */
-        color: #343a40;
-        /* Dark color for text */
-        font-weight: 600;
-        /* Bold text */
-    }
-
-    .dropdown-toggle img {
-        transition: transform 0.2s;
-        /* Image zoom effect */
-    }
-
-    .dropdown-toggle:hover img {
-        transform: scale(1.1);
-        /* Slightly enlarge the image on hover */
-    }
-
-    .dropdown-menu {
-        border-radius: 0.5rem;
-        /* Rounded corners */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        /* Subtle shadow for dropdown */
-        padding: 0.5rem 0;
-        /* Padding for dropdown items */
-    }
-
-    .dropdown-item {
-        transition: background-color 0.3s, color 0.3s;
-        /* Smooth transition */
-        color: #495057;
-        /* Dark text color */
-    }
-
-    .dropdown-item i {
-        margin-right: 8px;
-        /* Space between icon and text */
-        color: #6c757d;
-        /* Default icon color */
-    }
-
-    .dropdown-item:hover {
-        background-color: #f8f9fa;
-        /* Light background on hover */
-        color: #343a40;
-        /* Darker text on hover */
-    }
-
-    .dropdown-divider {
-        border-top: 1px solid #e9ecef;
-        /* Divider color */
-    }
-
-    .dropdown-item.text-danger:hover {
-        background-color: #f8d7da;
-        /* Light red background for Logout */
-        color: #721c24;
-        /* Darker text color for Logout */
-    }
-
-    /* Base Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f3f4f6;
-        color: #333;
-        line-height: 1.6;
-    }
-
-    .container {
-        max-width: 1000px;
-        margin: 50px auto;
-    }
-
-    .section-heading h3 {
-        font-size: 2rem;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    /* Instagram-like Recipe Card */
-    .single-best-receipe-area {
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        transition: transform 0.3s ease;
-    }
-
-    .single-best-receipe-area:hover {
-        transform: scale(1.02);
-    }
-
-    .recipe-image img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-    }
-
-    .recipe-card-content {
-        padding: 20px;
-    }
-
-    .recipe-title a {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
-        text-decoration: none;
-    }
-
-    .recipe-title a:hover {
-        color: #ff6f61;
-    }
-
-    /* User Info Section */
-    .user-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-        border: 2px solid #ff6f61;
-        object-fit: cover;
-    }
-
-    .user-info a {
-        font-weight: 500;
-        color: #333;
-        text-decoration: none;
-    }
-
-    .user-info a:hover {
-        color: #ff6f61;
-    }
-
-    /* Ratings Section */
-    .ratings i {
-        color: #ffcc00;
-    }
-
-    .favorite-btn {
-        color: #ff6f61;
-    }
-
-    .favorite-btn i {
-        margin-right: 5px;
-    }
-
-    .favorites-count {
-        font-size: 0.9rem;
-        color: #777;
-    }
-
-    /* Button */
-    .btn-view-all {
-        margin-top: 20px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .recipe-image img {
-            height: 200px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .recipe-image img {
-            height: 180px;
-        }
-
-        .recipe-title a {
-            font-size: 1rem;
-        }
-    }
-
-    .btn-share {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .share-buttons {
-        margin-top: 10px;
-    }
-
-    .btn-whatsapp {
-        background-color: #25D366;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-whatsapp i {
-        margin-right: 5px;
-    }
-</style>
 
 <body>
     <!-- Preloader -->
@@ -418,24 +40,6 @@
         <i class="circle-preloader"></i>
         <img src="img/core-img/salad.png" alt="">
     </div>
-
-    <!-- Search Wrapper -->
-    {{-- <div class="search-wrapper">
-        <!-- Close Btn -->
-        <div class="close-btn"><i class="fa fa-times" aria-hidden="true"></i></div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <form action="#" method="post">
-                        <input type="search" name="search" placeholder="Type any keywords...">
-                        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <!-- ##### Header Area Start ##### -->
     <header class="header-area">
 
@@ -458,9 +62,14 @@
 
                     <!-- Top Social Info -->
                     <div class="col-12 col-sm-6">
-                        <div class="top-social-info text-right">
+                        <div class="top-social-info text-right d-flex align-items-center justify-content-end">
+                            <!-- Dark Mode Toggle Button -->
+                            <button id="theme-toggle" class="btn btn-light" title="Toggle Dark/Light Mode">
+                                <i class="bi bi-moon" id="theme-icon"></i>
+                            </button>
+
                             <!-- Profile Icon with Dropdown -->
-                            <div class="dropdown">
+                            <div class="dropdown ml-2">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
                                     style="text-decoration: none;">
                                     <span class="text-lg font-semibold text-gray-800">{{ Auth::user()->name }}</span>
@@ -489,7 +98,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -502,7 +110,9 @@
                     <nav class="classy-navbar justify-content-between" id="deliciousNav">
 
                         <!-- Logo -->
-                        <a class="nav-brand" href="index.html"><img src="img/core-img/logo.icon.png" alt=""></a>
+                        <a class="nav-brand" href="index.html">
+                            <img src="img/core-img/logo.icon.png" alt="">
+                        </a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -511,18 +121,19 @@
 
                         <!-- Menu -->
                         <div class="classy-menu">
-
                             <!-- close btn -->
                             <div class="classycloseIcon">
-                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span>
+                                <div class="cross-wrap">
+                                    <span class="top"></span>
+                                    <span class="bottom"></span>
                                 </div>
                             </div>
-
                         </div>
                     </nav>
                 </div>
             </div>
         </div>
+
     </header>
     <!-- ##### Header Area End ##### -->
 
@@ -620,16 +231,26 @@
     <!-- ##### Top Catagory Area End ##### -->
 
     <!-- ##### Best Receipe Area Start ##### -->
-
     <section class="best-receipe-area">
         <div class="container">
             <div class="section-heading">
-                <h3>The Best Recipes</h3>
+                <h3 id="rcp">OUR BEST RECIPES</h3>
+                <a href="explore" class="explore-more">
+                    <i class="bi bi-search"></i> Explore More
+                </a>
             </div>
 
             <div class="row" id="recipe-container">
-                @foreach ($recipes->take(6) as $recipe)
-                    <div class="col-12 col-sm-6 col-lg-4">
+                @foreach ($recipes as $index => $recipe)
+                    @php
+                        $averageRating = $recipe->reviews->avg('rating');
+                        $filledStars = floor($averageRating);
+                        $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
+                    @endphp
+
+                    <!-- Show first 6 recipes, hide the rest initially -->
+                    <div class="col-12 col-sm-6 col-lg-4 recipe-item"
+                        style="display: {{ $index < 6 ? 'block' : 'none' }};">
                         <div class="single-best-receipe-area shadow rounded">
                             <!-- User Info at the top -->
                             <div class="user-info p-3">
@@ -659,12 +280,6 @@
                                 </h5>
 
                                 <div class="ratings">
-                                    @php
-                                        $averageRating = $recipe->reviews()->avg('rating');
-                                        $filledStars = floor($averageRating);
-                                        $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
-                                    @endphp
-
                                     @for ($i = 1; $i <= $filledStars; $i++)
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                     @endfor
@@ -679,34 +294,32 @@
                                 </div>
 
                                 <p class="average-rating">
-                                    @if ($averageRating)
-                                        Average Rating: {{ number_format($averageRating, 1) }} / 5
-                                    @else
-                                        No ratings yet
-                                    @endif
+                                    Average Rating: {{ number_format($averageRating, 1) }} / 5
                                 </p>
 
-                                <button class="btn" data-recipe-id="{{ $recipe->id }}">
+                                <button class="btn favorite-btn" data-recipe-id="{{ $recipe->id }}">
                                     @if ($recipe->favorites->contains(Auth::id()))
                                         <i class="fa fa-heart"></i>
                                     @else
                                         <i class="fa fa-heart-o"></i>
                                     @endif
                                 </button>
+
                                 <p class="favorites-count">{{ $recipe->favorites->count() }} user(s) favorited this
                                     recipe</p>
 
                                 <!-- Share Icon -->
-                                <div class="share-icon mt-2">
-                                    <button class="btn btn-share" onclick="toggleShareOptions({{ $recipe->id }})">
+                                <div class="share-icon mt-3">
+                                    <button class="btn btn-share btn-light"
+                                        onclick="toggleShareOptions({{ $recipe->id }})">
                                         <i class="fa fa-share-alt"></i> Share
                                     </button>
                                     <div class="social-share-options" id="share-options-{{ $recipe->id }}"
                                         style="display: none;">
-                                        <div class="share-buttons">
+                                        <div class="share-buttons mt-2">
                                             <a href="https://telegram.me/share/url?url={{ urlencode(url('user/user-show/' . $recipe->id)) }}&text={{ urlencode($recipe->title) }}"
-                                                target="_blank" class="btn btn-telegram">
-                                                <i class="fa fa-telegram"></i> Share on Telegram
+                                                target="_blank" class="btn btn-outline-primary btn-telegram">
+                                                <i class="fa fa-telegram"></i> Telegram
                                             </a>
                                         </div>
                                     </div>
@@ -717,97 +330,13 @@
                 @endforeach
             </div>
 
-            <!-- View All / View Less Button -->
+            <!-- View All / View Less button -->
             <div class="text-center mt-4">
-                <button id="view-toggle-button" class="btn btn-primary btn-view-all">View All Recipes</button>
-            </div>
-            <br><br><br>
-
-            <!-- Hidden Container for Additional Recipes -->
-            <div class="row" id="more-recipes" style="display: none;">
-                @foreach ($recipes->slice(6) as $recipe)
-                    <div class="col-12 col-sm-6 col-lg-4">
-                        <div class="single-best-receipe-area shadow rounded">
-                            <div class="user-info p-3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJfQpO3v4NSrlVvMpFYWw7YjijzAKTbuXHg&s"
-                                    alt="User Avatar" class="user-avatar">
-                                <a href="{{ url('profile/' . $recipe->user->id) }}">{{ $recipe->user->name }}</a>
-                            </div>
-                            <div class="recipe-image">
-                                @if ($recipe->image)
-                                    <img src="{{ asset('webimg/' . $recipe->image) }}" alt="{{ $recipe->title }}"
-                                        class="img-fluid">
-                                @else
-                                    <div class="no-image">
-                                        <p>No image available.</p>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="recipe-card-content">
-                                <h5 class="recipe-title">
-                                    <a href="{{ url('user/user-show/' . $recipe->id) }}">{{ $recipe->title }}</a>
-                                </h5>
-                                <p class="recipe-user">Uploaded by: {{ $recipe->user->name }}</p>
-
-                                <div class="ratings">
-                                    @php
-                                        $averageRating = $recipe->reviews()->avg('rating');
-                                        $filledStars = floor($averageRating);
-                                        $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
-                                    @endphp
-
-                                    @for ($i = 1; $i <= $filledStars; $i++)
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    @endfor
-
-                                    @if ($halfStar)
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                    @endif
-
-                                    @for ($i = 1; $i <= 5 - $filledStars - $halfStar; $i++)
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                    @endfor
-                                </div>
-
-                                <p class="average-rating">
-                                    @if ($averageRating)
-                                        Average Rating: {{ number_format($averageRating, 1) }} / 5
-                                    @else
-                                        No ratings yet
-                                    @endif
-                                </p>
-
-                                <button class="btn" data-recipe-id="{{ $recipe->id }}">
-                                    @if ($recipe->favorites->contains(Auth::id()))
-                                        <i class="fa fa-heart"></i>
-                                    @else
-                                        <i class="fa fa-heart-o"></i>
-                                    @endif
-                                </button>
-                                <p class="favorites-count">{{ $recipe->favorites->count() }} user(s) favorited this
-                                    recipe</p>
-                                <!-- Share Icon -->
-                                <div class="share-icon mt-2">
-                                    <button class="btn btn-share" onclick="toggleShareOptions({{ $recipe->id }})">
-                                        <i class="fa fa-share-alt"></i> Share
-                                    </button>
-                                    <div class="social-share-options" id="share-options-{{ $recipe->id }}"
-                                        style="display: none;">
-                                        <div class="share-buttons">
-                                            <a href="https://telegram.me/share/url?url={{ urlencode(url('user/user-show/' . $recipe->id)) }}&text={{ urlencode($recipe->title) }}"
-                                                target="_blank" class="btn btn-telegram">
-                                                <i class="fa fa-telegram"></i> Share on Telegram
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+                <button class="btn btn-primary" id="view-toggle-btn" onclick="toggleView()">View All</button>
             </div>
         </div>
     </section>
+
 
 
     <!-- ##### Best Receipe Area End ##### -->
@@ -1009,28 +538,31 @@
     <script src="{{ asset('js1/active.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
-            // Initially, hide the extra recipes
-            $("#more-recipes").hide();
+        let showingAll = false; // Track whether all recipes are shown or not
 
-            // Toggle button click event
-            $("#view-toggle-button").click(function() {
-                const button = $(this);
-                const isHidden = $("#more-recipes").is(":hidden");
+        function toggleView() {
+            const recipeItems = document.querySelectorAll('.recipe-item');
+            const viewToggleBtn = document.getElementById('view-toggle-btn');
 
-                if (isHidden) {
-                    // If the recipes are hidden, show them
-                    $("#more-recipes").slideDown(); // Show with slide effect
-                    button.text('View Less Recipes');
-                } else {
-                    // If the recipes are visible, hide them
-                    $("#more-recipes").slideUp(); // Hide with slide effect
-                    button.text('View All Recipes');
-                }
-            });
-        });
+            if (showingAll) {
+                // If showing all, hide extra recipes
+                recipeItems.forEach((item, index) => {
+                    if (index >= 6) {
+                        item.style.display = 'none';
+                    }
+                });
+                viewToggleBtn.textContent = 'View All'; // Change button text
+            } else {
+                // If not showing all, show all recipes
+                recipeItems.forEach(item => {
+                    item.style.display = 'block';
+                });
+                viewToggleBtn.textContent = 'View Less'; // Change button text
+            }
+
+            showingAll = !showingAll; // Toggle the state
+        }
     </script>
-
     <script>
         $(document).ready(function() {
             $('.btn').click(function(e) {
@@ -1068,12 +600,31 @@
         });
     </script>
     <script>
-        function toggleShareOptions(recipeId) {
-            const shareOptions = document.getElementById('share-options-' + recipeId);
-            shareOptions.style.display = shareOptions.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
 
+        // Check saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('bi-moon');
+            themeIcon.classList.add('bi-sun');
+        }
+
+        // Toggle Dark/Light mode
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.remove('bi-moon');
+                themeIcon.classList.add('bi-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.remove('bi-sun');
+                themeIcon.classList.add('bi-moon');
+            }
+        });
+    </script>
 
 </body>
 

@@ -17,7 +17,6 @@
     <div class="container mt-5">
         <h2 class="text-center">Category Table</h2>
 
-
         @if (session('success'))
             <script>
                 const Toast = Swal.mixin({
@@ -38,6 +37,14 @@
                 });
             </script>
         @endif
+
+        <!-- Back Button -->
+        <div class="mb-3">
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+        </div>
+
         <!-- Add Category Button -->
         <div class="text-right mb-3">
             <a href="/category-add" class="btn btn-success">
