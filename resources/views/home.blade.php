@@ -33,6 +33,86 @@
 
 </head>
 
+<style>
+    #rcp {
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+        perspective: 1000px;
+        /* Enable perspective */
+        animation: float 3s ease-in-out infinite;
+        /* Floating effect */
+        transform: rotateY(15deg);
+        /* Slight 3D rotation */
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0) rotateY(15deg);
+        }
+
+        50% {
+            transform: translateY(-20px) rotateY(15deg);
+            /* Float up */
+        }
+
+        100% {
+            transform: translateY(0) rotateY(15deg);
+        }
+    }
+
+    /* Glow effect */
+    #rcp:hover {
+        animation: none;
+        /* Stop floating effect on hover */
+        color: #ffcc00;
+        /* Change color */
+        text-shadow: 0 0 20px rgba(255, 204, 0, 0.6), 0 0 30px rgba(255, 204, 0, 0.8);
+        transform: rotateY(15deg) scale(1.1);
+        /* Scale on hover */
+    }
+
+    .explore-more {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        background-color: #007bff;
+        /* Primary color */
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        /* Rounded corners */
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        /* Soft shadow */
+    }
+
+    .explore-more i {
+        margin-right: 8px;
+        /* Space between icon and text */
+        font-size: 1.2rem;
+        /* Icon size */
+    }
+
+    .explore-more:hover {
+        background-color: #0056b3;
+        /* Darker shade on hover */
+        transform: translateY(-3px);
+        /* Lift effect */
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+        /* Enhanced shadow on hover */
+    }
+
+    .explore-more:active {
+        transform: translateY(0);
+        /* Reset lift effect on click */
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        /* Reset shadow on click */
+    }
+</style>
+</style>
 
 <body>
     <!-- Preloader -->
@@ -233,11 +313,13 @@
     <!-- ##### Best Receipe Area Start ##### -->
     <section class="best-receipe-area">
         <div class="container">
-            <div class="section-heading">
-                <h3 id="rcp">OUR BEST RECIPES</h3>
-                <a href="explore" class="explore-more">
-                    <i class="bi bi-search"></i> Explore More
-                </a>
+            <div class="cssanimation typing">
+                <div class="section-heading">
+                    <h3 id="rcp">OUR BEST RECIPES</h3>
+                    <a href="explore" class="explore-more">
+                        <i class="bi bi-search"></i> Explore More
+                    </a>
+                </div>
             </div>
 
             <div class="row" id="recipe-container">
@@ -254,7 +336,8 @@
                         <div class="single-best-receipe-area shadow rounded">
                             <!-- User Info at the top -->
                             <div class="user-info p-3">
-                                <a href="{{ url('profile/' . $recipe->user->id) }}">
+                                <a href="{{ route('profile.show', $recipe->user->id) }}">
+                                    <!-- Correct the route here -->
                                     <img src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
                                         alt="User Avatar" class="user-avatar">
                                     {{ $recipe->user->name }}

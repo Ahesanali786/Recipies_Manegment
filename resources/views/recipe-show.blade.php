@@ -172,25 +172,28 @@
 
 <body>
     @if (session('success'))
-    <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-right',
-            iconColor: 'green',
-            customClass: {
-                popup: 'colored-toast'
-            },
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-        });
-
-        Toast.fire({
-            icon: 'success',
-            title: "{{ session('success') }}"
-        });
-    </script>
-@endif
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: "{{ session('success') }}",
+                toast: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @elseif (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: "{{ session('error') }}",
+                toast: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
     @if (Auth::user()->role == 'user')
         <a href="{{ url('home') }}" class="btn btn-primary btn-3d"><i class="fa fa-arrow-left"></i></a>
     @endif

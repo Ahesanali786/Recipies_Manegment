@@ -54,14 +54,16 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-primary, .btn-success {
+        .btn-primary,
+        .btn-success {
             border-radius: 25px;
             padding: 10px 20px;
             font-weight: 500;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .btn-primary:hover, .btn-success:hover {
+        .btn-primary:hover,
+        .btn-success:hover {
             transform: translateY(-3px);
         }
 
@@ -95,7 +97,8 @@
             box-shadow: none;
         }
 
-        .fa-plus, .fa-trash {
+        .fa-plus,
+        .fa-trash {
             color: #fff;
         }
     </style>
@@ -112,7 +115,8 @@
             <!-- Recipe Title -->
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $recipe->title }}" required>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $recipe->title }}"
+                    required>
             </div>
 
             <!-- Recipe Description -->
@@ -124,19 +128,22 @@
             <!-- Preparation Time -->
             <div class="form-group">
                 <label for="preparation_time">Preparation Time (in minutes)</label>
-                <input type="number" class="form-control" id="preparation_time" name="preparation_time" value="{{ $recipe->preparation_time }}" required>
+                <input type="number" class="form-control" id="preparation_time" name="preparation_time"
+                    value="{{ $recipe->preparation_time }}" required>
             </div>
 
             <!-- Cooking Time -->
             <div class="form-group">
                 <label for="cooking_time">Cooking Time (in minutes)</label>
-                <input type="number" class="form-control" id="cooking_time" name="cooking_time" value="{{ $recipe->cooking_time }}" required>
+                <input type="number" class="form-control" id="cooking_time" name="cooking_time"
+                    value="{{ $recipe->cooking_time }}" required>
             </div>
 
             <!-- Servings -->
             <div class="form-group">
                 <label for="servings">Servings</label>
-                <input type="number" class="form-control" id="servings" name="servings" value="{{ $recipe->servings }}" required>
+                <input type="number" class="form-control" id="servings" name="servings"
+                    value="{{ $recipe->servings }}" required>
             </div>
 
             <!-- Recipe Category -->
@@ -145,7 +152,8 @@
                 <select name="category_id" class="form-control" required>
                     <option value="">Select a category</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ $recipe->category_id == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}"
+                            {{ $recipe->category_id == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -157,7 +165,8 @@
                 <label for="image" class="form-label">Image</label>
                 @if ($recipe->image)
                     <div>
-                        <img src="{{ asset('webimg/' . $recipe->image) }}" alt="Current Image" style="max-width: 200px; max-height: 200px;">
+                        <img src="{{ asset('webimg/' . $recipe->image) }}" alt="Current Image"
+                            style="max-width: 200px; max-height: 200px;">
                     </div>
                 @endif
                 <br>
@@ -170,10 +179,12 @@
                 @foreach ($recipe->ingredients as $ingredient)
                     <div class="ingredient-group row mb-3">
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="name[]" value="{{ $ingredient->name }}" placeholder="Ingredient Name" required>
+                            <input type="text" class="form-control" name="name[]" value="{{ $ingredient->name }}"
+                                placeholder="Ingredient Name" required>
                         </div>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="quantity[]" value="{{ $ingredient->quantity }}" placeholder="Quantity (e.g., 200g)" required>
+                            <input type="text" class="form-control" name="quantity[]"
+                                value="{{ $ingredient->quantity }}" placeholder="Quantity (e.g., 200g)" required>
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-danger remove-ingredient">
@@ -201,9 +212,9 @@
 
     <!-- Add Ingredient Script -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Add Ingredient Button Click Event
-            $('#addIngredientButton').click(function () {
+            $('#addIngredientButton').click(function() {
                 var ingredientGroup = `
                     <div class="ingredient-group row mb-3">
                         <div class="col-md-5">
@@ -220,7 +231,7 @@
             });
 
             // Remove Ingredient Button Click Event
-            $(document).on('click', '.remove-ingredient', function () {
+            $(document).on('click', '.remove-ingredient', function() {
                 $(this).closest('.ingredient-group').remove();
             });
         });

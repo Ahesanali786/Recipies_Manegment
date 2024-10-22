@@ -17,6 +17,6 @@ class UserController extends Controller
         $recipes = Recipe::where('user_id', $id)->get();
 
         // Pass the user data to the profile view
-        return view('profile', compact('user', 'recipes'));
+        return route('profile.index', compact('user', 'recipes'));
     }
 }

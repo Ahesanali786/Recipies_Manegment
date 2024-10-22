@@ -64,4 +64,15 @@ class ReviewController extends Controller
             ->rawColumns(['rating', 'action']) // Allow raw HTML for these columns
             ->make(true);
     }
+
+    public function destroy($reviewId){
+        $review = Review::find($reviewId);
+
+        if ($review) {
+            $review->delete();
+            return redirect()->back()->with('success', 'Review deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Review not found.');
+        }
+    }
 }

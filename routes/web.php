@@ -9,7 +9,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\Adminmiddelware;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Models\Review;
 
@@ -25,25 +24,13 @@ Route::get('/category-add', function () {
 Route::view('recipe-list', 'recipe-list');
 Route::view('category-list', 'category-list');
 Route::view('recipe-add', 'recipe-add');
-Route::view('user/user-show', 'user/user-show');
+// Route::view('user/user-show', 'user/user-show');
 Route::view('admin_review', 'admin_review');
-Route::view('user/profile', 'user/profile');
-Route::view('profile-edit', 'profile-edit');
+// Route::view('user/profile', 'user/profile');
+Route::view('profile.edit', 'profile.edit');
 Route::view('review', 'review');
 Route::view('explore', 'explore');
-
-// Route::middleware([Adminmiddelware::class])->group(function () {
-//     Route::post('/register', [RegisterController::class, 'register']);
-//     Route::post('/login', [RegisterController::class, 'login']);
-
-//     Route::get('/', function () {
-//         return view('register');
-//     });
-//     Route::view('login', 'login');
-// });
-
-
-// Route::get('/home', [HomeController::class, 'index']);
+Route::view('profile/show' , 'profile/show');
 
 
 Route::get('/home', [HomeController::class, 'index']);
@@ -89,12 +76,20 @@ Route::get('/favorite-recipes', [RecipeController::class, 'showFavoriteRecipes']
 
 
 // Profile
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-Route::get('/profile/{id}', [ProfileController::class, 'showUserProfile']);
+// Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+// Route::get('/profile/{id}', [ProfileController::class, 'show']);
+
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+Route::post('/profile', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('profiles/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('profiles/update-profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
 // user profile viewing
 // Route for showing the user profile
-Route::get('profile/{id}', [UserController::class, 'showProfile']);
+Route::get('/profile/{id}', [ProfileController::class, 'showProfile'])->name('profile.show');
+
 
 
 
@@ -120,17 +115,21 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
 
 
-Route::post('/follow/{id}', [UserController::class, 'follow'])->name('follow');
-Route::post('/unfollow/{id}', [UserController::class, 'unfollow'])->name('unfollow');
+// Route::post('/follow/{id}', [UserController::class, 'follow'])->name('follow');
+// Route::post('/unfollow/{id}', [UserController::class, 'unfollow'])->name('unfollow');
 
 
 
 // Route to show the edit profile form
-Route::get('/profile-edit/{id}', [profileController::class, 'edit']);
+// Route::get('/profile-edit/{id}', [profileController::class, 'edit']);
 
 // Route to handle the profile update
-Route::post('/profile-edit/{id}', [profileController::class, 'update']);
+// Route::post('/profile-edit/{id}', [profileController::class, 'update']);
 
 
 Route::get('/explore', [RecipeController::class, 'explore'])->name('explore.recipes');
+
+
+// recipe pin
+Route::post('/recipe/{id}/pin', [RecipeController::class, 'pinRecipe'])->name('recipe.pin');
 

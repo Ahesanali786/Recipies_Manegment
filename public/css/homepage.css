@@ -419,7 +419,7 @@ body {
 }
 
 body.dark-mode {
-    background: linear-gradient(135deg, #0f0f0e, #e00707, #05c642);
+    background: linear-gradient(135deg, #8fa5b2, #c4d0c6, #e3e9e9, #eae9e7);
     color: #ffffff;
 }
 

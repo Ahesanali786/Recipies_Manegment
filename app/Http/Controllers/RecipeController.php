@@ -56,7 +56,6 @@ class RecipeController extends Controller
 
     public function addRecipe(Request $request)
     {
-        // Validate request data
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -64,19 +63,19 @@ class RecipeController extends Controller
             'cooking_time' => 'required|string',
             'servings' => 'required|integer',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as necessary
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name.*' => 'required|string',
-            'quantity.*' => 'required|integer', // Ensure quantities are required and integers
+            'quantity.*' => 'required|integer',
         ]);
 
+        DB::beginTransaction(); // Start the transaction
         try {
-            // Check if the recipe with the same title already exists for the logged-in user
             $existingRecipe = Recipe::where('title', $request->title)
                 ->where('user_id', Auth::id())
                 ->first();
 
             if ($existingRecipe) {
-                return redirect('recipe-add')->with('success', 'You have already added a recipe with this title.');
+                return redirect('recipe-add')->with('error', 'You have already added a recipe with this title.');
             }
 
             $recipe = new Recipe();
@@ -86,35 +85,31 @@ class RecipeController extends Controller
             $recipe->cooking_time = $request->cooking_time;
             $recipe->servings = $request->servings;
             $recipe->category_id = $request->category_id;
-            $recipe->user_id = Auth::id(); // Set the user_id to the current logged-in user
+            $recipe->user_id = Auth::id();
 
             $image = $request->file('image');
-
             if ($image) {
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                // Ensure the image is uploaded to the correct folder
                 $image->move(public_path('webimg'), $imageName);
                 $recipe->image = $imageName;
             }
-
             $recipe->save();
 
-            // Add Ingredients
-            $ingredient_arr = []; // Initialize the ingredients array
-
+            $ingredient_arr = [];
             foreach ($request->name as $index => $name) {
-                $ingredient_arr[$index] = [ // Populate the array
+                $ingredient_arr[$index] = [
                     'name' => $name,
-                    'quantity' => (int) $request->quantity[$index], // Cast quantity to int
-                    'recipe_id' => $recipe->id, // Associate with the recipe
+                    'quantity' => (int) $request->quantity[$index],
+                    'recipe_id' => $recipe->id,
                 ];
             }
-
-            // Insert all ingredients at once
             Ingredient::insert($ingredient_arr);
+
+            DB::commit(); // Commit the transaction
 
             return redirect('recipe-list')->with('success', 'Recipe added successfully.');
         } catch (\Exception $e) {
+            DB::rollback(); // Rollback on error
             return redirect('recipe-add')->with('error', 'Failed to add recipe: ' . $e->getMessage());
         }
     }
@@ -131,46 +126,52 @@ class RecipeController extends Controller
 
     public function updateRecipe(Request $request, $id)
     {
+        DB::beginTransaction(); // Start the transaction
         try {
-            $recipe = Recipe::find($request->id);
+            $recipe = Recipe::find($id);
+            if (!$recipe) {
+                return redirect('recipe-list')->with('error', 'Recipe not found.');
+            }
+
             $recipe->title = $request->title;
             $recipe->description = $request->description;
             $recipe->preparation_time = $request->preparation_time;
             $recipe->cooking_time = $request->cooking_time;
             $recipe->servings = $request->servings;
             $recipe->category_id = $request->category_id;
-            $image =  $request->image;
 
+            $image = $request->file('image');
             if ($image) {
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $request->image->move('webimg', $imageName);
+                $image->move(public_path('webimg'), $imageName);
                 $recipe->image = $imageName;
             }
+
             $recipe->save();
 
             // Delete old ingredients
             Ingredient::where('recipe_id', $recipe->id)->delete();
 
-            $ingredient_arr = []; // Initialize the ingredients array
-
+            $ingredient_arr = [];
             foreach ($request->name as $index => $name) {
-                $ingredient_arr[$index] = [ // Populate the array
+                $ingredient_arr[$index] = [
                     'name' => $name,
-                    'quantity' => (int) $request->quantity[$index], // Cast quantity to int
-                    'recipe_id' => $recipe->id, // Associate with the recipe
+                    'quantity' => (int) $request->quantity[$index],
+                    'recipe_id' => $recipe->id,
                 ];
             }
-
-            // Insert all ingredients at once
             Ingredient::insert($ingredient_arr);
+
+            DB::commit(); // Commit the transaction
+
             if (Auth::user()->role == 'admin') {
                 return redirect('recipe-list')->with('success', 'Recipe updated successfully.');
             } else {
                 return redirect('profile')->with('success', 'Recipe updated successfully.');
             }
-            // return redirect('recipe-list')->with('success', 'Recipe updated successfully.');
         } catch (\Exception $e) {
-            return redirect('recipe-edit')->with('error', 'Failed to update recipe.');
+            DB::rollback(); // Rollback on error
+            return redirect('recipe-edit/' . $id)->with('error', 'Failed to update recipe: ' . $e->getMessage());
         }
     }
 
@@ -263,7 +264,7 @@ class RecipeController extends Controller
                 ->first();
 
             if ($existingRecipe) {
-                return redirect('recipe-add')->with('success', 'You have already added a recipe with this title.');
+                return redirect('recipe-add')->with('error', 'You have already added a recipe with this title.');
             }
             $recipe = new Recipe();
             $recipe->title = $request->title;
@@ -353,5 +354,20 @@ class RecipeController extends Controller
         }
 
         return view('explore', compact('categories'));
+    }
+    public function pinRecipe($id)
+    {
+        $recipe = Recipe::findOrFail($id);
+
+        // Ensure the logged-in user is the owner of the recipe
+        if (Auth::user()->id !== $recipe->user_id) {
+            return redirect()->back()->with('error', 'You can only pin your own recipes.');
+        }
+
+        // Toggle the 'pinned' status
+        $recipe->pinned = !$recipe->pinned;
+        $recipe->save();
+
+        return redirect()->back()->with('success', $recipe->pinned ? 'Recipe pinned successfully!' : 'Recipe unpinned.');
     }
 }

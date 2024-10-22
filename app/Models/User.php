@@ -35,4 +35,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Recipe::class, 'favorites')->withTimestamps(); // Replace 'favorites' with your actual pivot table name
     }
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }

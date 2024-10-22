@@ -19,7 +19,7 @@ class Recipe extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $fillable = ['title', 'description', 'preparation_time', 'cooking_time', 'servings', 'category_id', 'user_id'];
+    protected $fillable = ['title', 'description', 'preparation_time', 'cooking_time', 'servings', 'category_id', 'user_id', 'pinned'];
 
     public function user()
     {
