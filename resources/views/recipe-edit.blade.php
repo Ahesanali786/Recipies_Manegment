@@ -55,7 +55,8 @@
         }
 
         .btn-primary,
-        .btn-success {
+        .btn-success,
+        .btn-danger {
             border-radius: 25px;
             padding: 10px 20px;
             font-weight: 500;
@@ -63,23 +64,11 @@
         }
 
         .btn-primary:hover,
-        .btn-success:hover {
-            transform: translateY(-3px);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-radius: 25px;
-            padding: 8px 16px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
+        .btn-success:hover,
         .btn-danger:hover {
-            background-color: #c82333;
             transform: translateY(-3px);
         }
 
-        /* Image preview styling */
         img {
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -91,10 +80,6 @@
 
         .ingredient-group:hover {
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .ingredient-group .form-control {
-            box-shadow: none;
         }
 
         .fa-plus,
@@ -169,7 +154,6 @@
                             style="max-width: 200px; max-height: 200px;">
                     </div>
                 @endif
-                <br>
                 <input type="file" class="form-control" name="image" id="image" accept="image/*">
                 <small class="text-muted">Leave empty to keep the current image.</small>
             </div>
@@ -178,22 +162,38 @@
             <div id="ingredientContainer">
                 @foreach ($recipe->ingredients as $ingredient)
                     <div class="ingredient-group row mb-3">
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" name="name[]" value="{{ $ingredient->name }}"
-                                placeholder="Ingredient Name" required>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="name[]"
+                                value="{{ old('name[]', $ingredient->name) }}" placeholder="Ingredient Name" required>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <input type="text" class="form-control" name="quantity[]"
-                                value="{{ $ingredient->quantity }}" placeholder="Quantity (e.g., 200g)" required>
+                                value="{{ old('quantity[]', $ingredient->quantity) }}"
+                                placeholder="Quantity (e.g., 200g)" required>
                         </div>
-                        <div class="col-md-2">
+
+                        <div class="col-md-3">
+                            <select name="unit_id[]" class="form-control" required>
+                                <option value="">Select a Units</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}"
+                                        {{ $ingredient->unit_id == $unit->id ? 'selected' : '' }}>
+                                        {{ $unit->unitname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-1">
                             <button type="button" class="btn btn-danger remove-ingredient">
-                                <i class="fa fa-trash"></i> Remove
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 @endforeach
             </div>
+
+
 
             <!-- Add Ingredient Button -->
             <button type="button" class="btn btn-success mb-3" id="addIngredientButton">
@@ -217,14 +217,24 @@
             $('#addIngredientButton').click(function() {
                 var ingredientGroup = `
                     <div class="ingredient-group row mb-3">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <input type="text" class="form-control" name="name[]" placeholder="Ingredient Name" required>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <input type="text" class="form-control" name="quantity[]" placeholder="Quantity (e.g., 200g)" required>
                         </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-danger remove-ingredient"><i class="fa fa-trash"></i> Remove</button>
+                        <div class="col-md-3">
+                            <select name="unit_id[]" class="form-control" required>
+                                <option value="">Select a Units</option>
+                                @foreach ($units as $unit)
+                                      <option value="{{ $unit->id }}">{{ $unit->unitname }}</option>
+                                @endforeach
+                            </select>
+                                    </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger remove-ingredient">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </div>
                     </div>`;
                 $('#ingredientContainer').append(ingredientGroup);

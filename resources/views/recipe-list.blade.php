@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
+        /* body {
             background: linear-gradient(to right, #1abcc2, #1d6da8);
             color: #ffffff;
-        }
+        } */
 
         h2 {
             margin-bottom: 30px;
@@ -87,7 +87,7 @@
                         @endif
                         <th>ID</th>
                         <th>Title</th>
-                        <th>Description</th>
+                        {{-- <th>Description</th> --}}
                         <th>Preparation Time</th>
                         <th>Cooking Time</th>
                         <th>Servings</th>
@@ -127,10 +127,10 @@
                         data: 'title',
                         name: 'title'
                     },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
+                    // {
+                    //     data: 'description',
+                    //     name: 'description'
+                    // },
                     {
                         data: 'preparation_time',
                         name: 'preparation_time'

@@ -10,6 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -178,6 +184,28 @@
             margin: 0;
             /* Remove margin to avoid extra space */
         }
+
+        .dropdown-menu {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+            border-radius: 5px;
+        }
+
+        .dropdown-item i {
+            font-size: 18px;
+        }
     </style>
 </head>
 
@@ -210,7 +238,33 @@
         <a href="{{ url('home') }}" class="btn btn-secondary mb-3">
             <i class="fa fa-arrow-left"></i> Back
         </a>
-
+        <!-- Button aligned to the right -->
+        <div class="dropdown mb-3 float-end">
+            @if (Auth::check() && $profile && Auth::user()->id === $profile->user_id)
+                <!-- user ni profile na hoy tyare aa totgle button pn dekhase nhi  -->
+                <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false" style="border: none; color: #050404; background-color: #fff;">
+                    <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 200px;">
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ url('profiles/edit-profile') }}">
+                            <i class="fas fa-user-edit me-2"></i> Edit Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ url('favorite-recipes') }}">
+                            <i class="fas fa-heart me-2"></i> Favorite Recipes
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ url('/profile/cheng_password') }}">
+                            <i class="fas fa-key me-2"></i> Change Password
+                        </a>
+                    </li>
+                </ul>
+            @endif
+        </div>
         @if ($profile)
             <div class="profile-header">
                 @if ($profile->profile_picture)
@@ -223,6 +277,10 @@
                 <div class="profile-info">
                     <h1 class="profile-name">{{ $profile->name ?? 'User Name Not Available' }}</h1>
                     <p class="profile-bio">{{ $profile->bio ?? 'No bio provided' }}</p>
+                    {{-- <p class="profile-bio">
+                        Created The Profile:-{{ $profile->created_at ? $profile->created_at->format('F j, Y') : 'No bio provided' }} <br> <br>
+                        Last Update The Profile:-{{ $profile->updated_at ? $profile->updated_at->format('F j, Y') : 'No bio provided' }}
+                    </p> --}}
                     <div class="follow-section">
                         <div>
                             <p class="count">{{ $recipes->count() }}</p>
@@ -240,7 +298,7 @@
                 </div>
             </div>
 
-            <div class="button-container">
+            {{-- <div class="button-container">
                 @if (Auth::check() && Auth::user()->id === $profile->user_id)
                     <div class="mb-3">
                         <a href="javascript:void(0)" onclick="window.location='{{ url('profiles/edit-profile') }}'"
@@ -249,7 +307,7 @@
                             class="btn btn-dark">My Favorite Recipes</a>
                     </div>
                 @endif
-            </div>
+            </div> --}}
 
 
             <h3 class="mt-4">My Recipes</h3>
@@ -288,8 +346,9 @@
                             @endif
                         </p>
                         <div class="recipe-actions">
-                            <span><i class="fa fa-heart"></i> {{ $recipe->favorites_count ?? 0 }} Likes</span>
-                            <span><i class="fa fa-share-alt"></i> Share</span>
+                            <span><i class="fa fa-heart"></i> {{ $recipe->favorites_count ?? 0 }} </span>
+                            <span><i class="fa fa-comment"></i> {{ $recipe->reviews_count ?? 0 }} </span>
+                            {{-- <span><i class="fa fa-share-alt"></i> Share</span> --}}
 
                             @if (Auth::check() && $recipe->user_id === Auth::id())
                                 <div>
@@ -328,12 +387,12 @@
                 <p style="color: #6c757d; font-size: 1.1rem;">
                     It seems like you haven't set up your profile yet.
                 </p>
-                {{-- @if (auth()->user() && auth()->user()->id === $user->id && $user->profile === null) --}}
+                @if (Auth::user()->id === $user->id)
                     <a href="{{ route('profile.create') }}" class="btn btn-success btn-lg mt-3"
                         style="border-radius: 30px; padding: 10px 20px;">
                         <i class="fas fa-user-plus"></i> Create Profile
                     </a>
-                {{-- @endif --}}
+                @endif
             </div>
         @endif
     </div>
@@ -355,6 +414,8 @@
             });
         }
     </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

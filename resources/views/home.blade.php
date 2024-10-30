@@ -111,6 +111,35 @@
         box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
         /* Reset shadow on click */
     }
+
+    .best-recipe-area {
+        background-color: #f8f9fa;
+        /* Light background for the section */
+    }
+
+    .single-best-recipe-area {
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .single-best-recipe-area:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .recipe-title a {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .recipe-title a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 </style>
 
@@ -311,12 +340,12 @@
     <!-- ##### Top Catagory Area End ##### -->
 
     <!-- ##### Best Receipe Area Start ##### -->
-    <section class="best-receipe-area">
+    <section class="best-recipe-area py-5">
         <div class="container">
-            <div class="cssanimation typing">
-                <div class="section-heading">
-                    <h3 id="rcp">OUR BEST RECIPES</h3>
-                    <a href="explore" class="explore-more">
+            <div class="cssanimation typing mb-4">
+                <div class="section-heading text-center">
+                    <h3 id="rcp" class="text-uppercase">Our Best Recipes</h3>
+                    <a href="explore" class="explore-more btn btn-outline-primary">
                         <i class="bi bi-search"></i> Explore More
                     </a>
                 </div>
@@ -328,19 +357,21 @@
                         $averageRating = $recipe->reviews->avg('rating');
                         $filledStars = floor($averageRating);
                         $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
+                        $emptyStar = 5 - $filledStars - $halfStar;
                     @endphp
 
                     <!-- Show first 6 recipes, hide the rest initially -->
-                    <div class="col-12 col-sm-6 col-lg-4 recipe-item"
+                    <div class="col-12 col-sm-6 col-lg-4 recipe-item mb-4"
                         style="display: {{ $index < 6 ? 'block' : 'none' }};">
-                        <div class="single-best-receipe-area shadow rounded">
+                        <div class="single-best-recipe-area shadow rounded">
                             <!-- User Info at the top -->
-                            <div class="user-info p-3">
-                                <a href="{{ route('profile.show', $recipe->user->id) }}">
-                                    <!-- Correct the route here -->
+                            <div class="user-info p-3 d-flex align-items-center">
+                                <a href="{{ route('profile.show', $recipe->user->id) }}"
+                                    class="d-flex align-items-center">
                                     <img src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
-                                        alt="User Avatar" class="user-avatar">
-                                    {{ $recipe->user->name }}
+                                        alt="User Avatar" class="user-avatar rounded-circle me-2"
+                                        style="width: 40px; height: 40px;">
+                                    <span class="user-name">{{ $recipe->user->name }}</span>
                                 </a>
                             </div>
 
@@ -348,66 +379,70 @@
                             <div class="recipe-image">
                                 @if ($recipe->image)
                                     <img src="{{ asset('webimg/' . $recipe->image) }}" alt="{{ $recipe->title }}"
-                                        class="img-fluid">
+                                        class="img-fluid rounded-top">
                                 @else
-                                    <div class="no-image">
+                                    <div class="no-image text-center p-3">
                                         <p>No image available.</p>
                                     </div>
                                 @endif
                             </div>
 
                             <!-- Recipe Content -->
-                            <div class="recipe-card-content">
+                            <!-- Recipe Content -->
+                            <div class="recipe-card-content p-3">
                                 <h5 class="recipe-title">
-                                    <a href="{{ url('user/user-show/' . $recipe->id) }}">{{ $recipe->title }}</a>
+                                    <a href="{{ url('user/user-show/' . $recipe->id) }}"
+                                        class="text-decoration-none">{{ $recipe->title }}</a>
                                 </h5>
 
-                                <div class="ratings">
+                                <div class="ratings mb-2">
                                     @for ($i = 1; $i <= $filledStars; $i++)
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star text-warning" aria-hidden="true"></i>
                                     @endfor
 
                                     @if ($halfStar)
-                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                        <i class="fa fa-star-half-o text-warning" aria-hidden="true"></i>
                                     @endif
 
-                                    @for ($i = 1; $i <= 5 - $filledStars - $halfStar; $i++)
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                    @for ($i = 1; $i <= $emptyStar; $i++)
+                                        <i class="fa fa-star-o text-secondary" aria-hidden="true"></i>
                                     @endfor
                                 </div>
 
-                                <p class="average-rating">
-                                    Average Rating: {{ number_format($averageRating, 1) }} / 5
+                                <p class="average-rating text-muted">
+                                    Average Rating: <strong>{{ number_format($averageRating, 1) }}</strong> / 5
                                 </p>
 
-                                <button class="btn favorite-btn" data-recipe-id="{{ $recipe->id }}">
-                                    @if ($recipe->favorites->contains(Auth::id()))
-                                        <i class="fa fa-heart"></i>
-                                    @else
-                                        <i class="fa fa-heart-o"></i>
-                                    @endif
-                                </button>
-
-                                <p class="favorites-count">{{ $recipe->favorites->count() }} user(s) favorited this
-                                    recipe</p>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <button class="btn favorite-btn me-10"
+                                        data-recipe-id="{{ $recipe->id }}">
+                                        @if ($recipe->favorites->contains(Auth::id()))
+                                            <i class="fa fa-heart"></i>
+                                        @else
+                                            <i class="fa fa-heart-o"></i>
+                                        @endif
+                                    </button>
+                                    <p class="favorites-count text-muted mb-0">{{ $recipe->favorites->count() }}</p>
+                                    <p class="comments-count text-muted mb-0 ms-3"><i class="fa fa-comment"></i>
+                                        {{ $recipe->reviews->count() }}</p>
+                                    <button class="btn btn-light ms-3"
+                                        onclick="toggleShareOptions({{ $recipe->id }})">
+                                        <i class="fa fa-share-alt"></i>
+                                    </button>
+                                </div>
 
                                 <!-- Share Icon -->
-                                <div class="share-icon mt-3">
-                                    <button class="btn btn-share btn-light"
-                                        onclick="toggleShareOptions({{ $recipe->id }})">
-                                        <i class="fa fa-share-alt"></i> Share
-                                    </button>
-                                    <div class="social-share-options" id="share-options-{{ $recipe->id }}"
-                                        style="display: none;">
-                                        <div class="share-buttons mt-2">
-                                            <a href="https://telegram.me/share/url?url={{ urlencode(url('user/user-show/' . $recipe->id)) }}&text={{ urlencode($recipe->title) }}"
-                                                target="_blank" class="btn btn-outline-primary btn-telegram">
-                                                <i class="fa fa-telegram"></i> Telegram
-                                            </a>
-                                        </div>
+                                <div class="social-share-options" id="share-options-{{ $recipe->id }}"
+                                    style="display: none;">
+                                    <div class="share-buttons mt-2">
+                                        <a href="https://telegram.me/share/url?url={{ urlencode(url('user/user-show/' . $recipe->id)) }}&text={{ urlencode($recipe->title) }}"
+                                            target="_blank" class="btn btn-outline-primary btn-telegram">
+                                            <i class="fa fa-telegram"></i> Telegram
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -419,6 +454,7 @@
             </div>
         </div>
     </section>
+
 
 
 
@@ -648,7 +684,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('.btn').click(function(e) {
+            $('.favorite-btn').click(function(e) {
                 e.preventDefault(); // Prevent default button action
                 const button = $(this);
                 const recipeId = button.data('recipe-id');
@@ -672,8 +708,7 @@
                         }
 
                         // Update the favorites count
-                        button.siblings('.favorites-count').text(response.favoritesCount +
-                            ' user(s) favorited this recipe');
+                        button.siblings('.favorites-count').text(response.favoritesCount);
                     },
                     // error: function() {
                     //     alert('Something went wrong. Please try again.');

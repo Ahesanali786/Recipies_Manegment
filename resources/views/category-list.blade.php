@@ -54,7 +54,6 @@
                 <i class="fa fa-plus"></i> Add Category
             </a>
         </div>
-
         <!-- Category Table -->
         <table id="recipeTable" class="table table-striped table-bordered">
             <thead>

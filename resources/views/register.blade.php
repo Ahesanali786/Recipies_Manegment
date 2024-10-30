@@ -1,202 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Register</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to right, #00c6ff, #0072ff);
-            font-family: 'Open Sans', sans-serif;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0 20px;
-        }
-
-        .container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.6s ease;
-            max-width: 450px;
-            transition: transform 0.3s;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #0072ff;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        .form-control {
-            transition: all 0.3s;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-control:focus {
-            border-color: #0072ff;
-            box-shadow: 0 0 5px rgba(0, 114, 255, 0.5);
-        }
-
-        .btn {
-            height: 60px;
-            border-radius: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s;
-        }
-
-        .pushable {
-            position: relative;
-            background: transparent;
-            padding: 0px;
-            border: none;
-            cursor: pointer;
-            outline: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        .shadow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: rgba(0, 114, 255, 0.3);
-            border-radius: 8px;
-            filter: blur(5px);
-            transform: translateY(4px);
-            transition: transform 0.3s;
-        }
-
-        .front {
-            display: block;
-            position: relative;
-            border-radius: 8px;
-            background: #0072ff;
-            padding: 16px 32px;
-            color: white;
-            font-family: inherit;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 1rem;
-            transform: translateY(-4px);
-            transition: transform 0.3s;
-        }
-
-        .pushable:hover .front {
-            transform: translateY(-6px);
-        }
-
-        .pushable:hover .shadow {
-            transform: translateY(2px);
-        }
-
-        .pushable:active .front {
-            transform: translateY(-2px);
-        }
-
-        .pushable:active .shadow {
-            transform: translateY(1px);
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .alert {
-            border-radius: 10px;
-        }
-    </style>
+    <!-- Fonts and icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <!-- CSS Files -->
+    <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
 
-<div class="container mt-5">
-    <h2>Register</h2>
+<body class="">
+    <main class="main-content mt-0">
+        <section>
+            <div class="page-header min-vh-100">
+                <div class="container">
+                    <div class="row">
+                        <div
+                            class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+                            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
+                                style="background-image: url('{{ asset('assets/img/illustrations/illustration-signup.jpg') }}'); background-size: cover;">
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                            <div class="card card-plain">
+                                <div class="card-header">
+                                    <h4 class="font-weight-bolder">Sign Up</h4>
+                                    <p class="mb-0">Enter your email and password to register</p>
+                                </div>
+                                <div class="card-body">
+                                    <form action="/register" method="POST" role="form">
+                                        @csrf
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" name="name" class="form-control" required>
+                                        </div>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="email" class="form-control" required>
+                                        </div>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control" required>
+                                        </div>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label">Confirm Password</label>
+                                            <input type="password" name="password_confirmation" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="form-check form-check-info text-start ps-0">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault" checked required>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                I agree to the <a href="#"
+                                                    class="text-dark font-weight-bolder">Terms and Conditions</a>
+                                            </label>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">Sign
+                                                Up</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                    <p class="mb-2 text-sm mx-auto">
+                                        Already have an account?
+                                        <a href="{{ url('login') }}"
+                                            class="text-primary text-gradient font-weight-bold">Sign in</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Core JS Files -->
+    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Dashboard -->
+    <script src="{{ asset('assets/js/material-dashboard.min.js?v=3.2.0') }}"></script>
+    @if (session('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-right',
+                iconColor: 'red',
+                customClass: {
+                    popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
 
-    <!-- Display Validation Errors -->
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            Toast.fire({
+                icon: 'error',
+                title: "{{ session('error') }}"
+            });
+        </script>
     @endif
-
-    <!-- Registration Form -->
-    <form method="POST" action="/register">
-        @csrf
-
-        <!-- Name -->
-        <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required autofocus>
-        </div>
-
-        <!-- Email -->
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
-        </div>
-
-        <!-- Password -->
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="d-flex justify-content-center">
-            <button class="pushable">
-                <span class="shadow"></span>
-                <span class="front">Submit</span>
-            </button>
-        </div>
-    </form>
-    <br>
-
-    <p>If you are registered, click here <a href="/login">Login</a></p>
-</div>
-
-<!-- Bootstrap JS (Optional) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
+
 </html>

@@ -19,4 +19,20 @@ class UserController extends Controller
         // Pass the user data to the profile view
         return route('profile.index', compact('user', 'recipes'));
     }
+    public function index()
+    {
+        // Retrieve all users
+        $users = User::all();
+
+        // Pass users to the view
+        return view('users.index', compact('users'));
+    }
+    public function toggleBlock($id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_blocked = !$user->is_blocked;
+        $user->save();
+
+        return redirect()->back()->with('status', 'User status updated successfully.');
+    }
 }

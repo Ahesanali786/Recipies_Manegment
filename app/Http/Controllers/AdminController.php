@@ -8,6 +8,7 @@ use App\Models\Recipe;
 use App\Models\Ingredient;
 use App\Models\Category;
 use App\Models\Review;
+use App\Models\Units;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -26,7 +27,8 @@ public function dashboard()
             $ingredients = Ingredient::all()->count();
             $category = Category::all()->count();
             $reviews = Review::all()->count();
-            return view('dashboard', compact('users', 'recipes', 'ingredients', 'category', 'reviews'));
+            $units = Units::all()->count();
+            return view('dashboard', compact('users', 'recipes', 'ingredients', 'category', 'reviews', 'units'));
 
             return view('dashboard');
 

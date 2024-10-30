@@ -77,6 +77,11 @@
 
         .ingredient-group {
             transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
         }
 
         .ingredient-group:hover {
@@ -96,6 +101,17 @@
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
+            }
+
+            .ingredient-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .ingredient-group .col-md-5,
+            .ingredient-group .col-md-2 {
+                flex: 100%;
+                max-width: 100%;
             }
         }
     </style>
@@ -174,13 +190,21 @@
             <!-- Ingredient Section -->
             <div id="ingredientContainer">
                 <div class="ingredient-group row mb-3">
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <input type="text" class="form-control" name="name[]" placeholder="Ingredient Name"
                             required>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                         <input type="text" class="form-control" name="quantity[]" placeholder="Quantity (e.g., 200g)"
                             required>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="unit_id[]" class="form-control" required>
+                            <option value="">Select a Units</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->id }}">{{ $unit->unitname }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-success add-more">
@@ -205,14 +229,24 @@
             $('.add-more').on('click', function() {
                 var newIngredientRow = `
                     <div class="ingredient-group row mb-3">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <input type="text" class="form-control" name="name[]" placeholder="Ingredient Name" required>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <input type="text" class="form-control" name="quantity[]" placeholder="Quantity (e.g., 200g)" required>
                         </div>
+                          <div class="col-md-3">
+                        <select name="unit_id[]" class="form-control" required>
+                            <option value="">Select a Units</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->id }}">{{ $unit->unitname }}</option>
+                            @endforeach
+                        </select>
+                       </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger remove-ingredient"><i class="fa fa-trash"></i> Remove</button>
+                            <button type="button" class="btn btn-danger remove-ingredient">
+                                <i class="fa fa-trash"></i> Remove
+                            </button>
                         </div>
                     </div>`;
                 $('#ingredientContainer').append(newIngredientRow);

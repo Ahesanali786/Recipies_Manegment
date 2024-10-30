@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('recipes', function (Blueprint $table) {
-            $table->boolean('pinned')->default(false); // Add 'pinned' column with default value false
+        Schema::create('units', function (Blueprint $table) {
+            $table->id();
+            $table->string('unitname');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('recipes', function (Blueprint $table) {
-            $table->dropColumn('pinned'); // Drop the column if rollback
-        });
+        Schema::dropIfExists('units');
     }
 };

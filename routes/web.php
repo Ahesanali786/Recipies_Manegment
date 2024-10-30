@@ -8,6 +8,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Models\Review;
@@ -31,6 +32,13 @@ Route::view('profile.edit', 'profile.edit');
 Route::view('review', 'review');
 Route::view('explore', 'explore');
 Route::view('profile/show' , 'profile/show');
+Route::view('profile/cheng_password', 'profile/cheng_password');
+Route::view('unit-list', 'unit-list');
+Route::view('units-add', 'units-add');
+
+
+
+
 
 
 Route::get('/home', [HomeController::class, 'index']);
@@ -89,12 +97,13 @@ Route::put('profiles/update-profile/{id}', [ProfileController::class, 'update'])
 // user profile viewing
 // Route for showing the user profile
 Route::get('/profile/{id}', [ProfileController::class, 'showProfile'])->name('profile.show');
-
+// cheng-password
+Route::post('/profile/cheng_password', [ProfileController::class, 'changePassword']);
 
 
 
 // reviews
-Route::get('/show-reviews/{id}', [RecipeController::class, 'showreviews']);
+// Route::get('/show-reviews/{id}', [RecipeController::class, 'showreviews']);
 Route::get('/review', [ReviewController::class, 'index'])->name('review.index');
 Route::get('/review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
 Route::get('/review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
@@ -133,3 +142,15 @@ Route::get('/explore', [RecipeController::class, 'explore'])->name('explore.reci
 // recipe pin
 Route::post('/recipe/{id}/pin', [RecipeController::class, 'pinRecipe'])->name('recipe.pin');
 
+// units
+
+Route::get('/unit-list', [UnitsController::class, 'showUnits']);
+Route::post('/unit-add', [UnitsController::class, 'addUnit']);
+Route::get('/unit-edit/{id}', [UnitsController::class, 'editUnit']);
+Route::post('/unit-edit/{id}', [UnitsController::class, 'updateUnit']);
+Route::get('/unit-delete/{id}', [UnitsController::class, 'deleteUnit']);
+
+
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users/{id}/toggle-block', [UserController::class, 'toggleBlock'])->name('users.toggleBlock');

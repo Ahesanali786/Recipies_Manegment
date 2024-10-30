@@ -223,14 +223,21 @@
                     @foreach ($recipe->ingredients as $ingredient)
                         <li class="list-group-item ingredient-item">
                             <strong>{{ $ingredient->name }}</strong> - {{ $ingredient->quantity }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+                            @foreach ($units as $unit)
+                                @if ($ingredient->unit_id == $unit->id)
+                                    {{ $unit->unitname }}
+                                @break;
+                            @endif
+                        @endforeach
+                    </li>
+                @endforeach
+            </ul>
+
 
             @if (Auth::user()->role == 'admin' || Auth::user()->id == $recipe->user_id)
                 <div class="card-footer text-center">
-                    <a href="{{ url('recipe-edit/' . $recipe->id) }}" class="btn btn-warning btn-3d">Edit Recipe</a>
+                    <a href="{{ url('recipe-edit/' . $recipe->id) }}" class="btn btn-warning btn-3d">Edit
+                        Recipe</a>
                     <a href="{{ url('recipe-list') }}" class="btn btn-primary btn-3d">Back to Recipes</a>
                 </div>
             @endif
@@ -334,7 +341,8 @@
     </script>
 
     <!-- Include Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 
 </html>

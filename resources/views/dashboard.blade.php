@@ -24,10 +24,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }}">
     <!-- Add FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .chat{
-        }
-    </style>
 </head>
 
 <body class="body">
@@ -105,11 +101,36 @@
                                         </li>
                                     </ul>
                                 </li>
-
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="fas fa-box text-green-600 text-xl"></i></div>
+                                        <div class="text">Units</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a href="units-add" class="">
+                                                <div class="icon"><i class="fas fa-plus-circle"></i></div>
+                                                <div class="text">Add Units</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a href="unit-list" class="">
+                                                <div class="icon"><i class="fas fa-list"></i></div>
+                                                <div class="text">Units List</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li class="menu-item">
                                     <a href="review" class="">
                                         <div class="icon"><i class="fas fa-star"></i></div>
                                         <div class="text">Reviews</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ route('users.index') }}" class="">
+                                        <div class="icon"> <i class="fas fa-user"></i></div>
+                                        <div class="text">Users</div>
                                     </a>
                                 </li>
 
@@ -284,6 +305,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div
+                                                    class="wg-chart-default mb-20 p-4 border border-gray-300 rounded-lg shadow-md flex justify-between items-center">
+                                                    <div class="flex items-center gap14">
+                                                        <div class="image ic-bg">
+                                                            <i class="fas fa-box text-green-600 text-xl"></i>
+                                                            <!-- Recipe icon -->
+                                                        </div>
+                                                        <div>
+                                                            <div class="body-text mb-2">Total Units</div>
+                                                            <h4>{{ $units }}</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -298,7 +332,8 @@
                         <div class="wg-box border border-gray-300 rounded-lg shadow-md p-6 bg-white">
                             <h5 class="text-lg font-semibold mb-4 text-center text-gray-800">Statistics Overview</h5>
                             <div class="relative" style="height: 300px;">
-                                <canvas id="myChart" style="max-width: 100%; height: 100%; margin-left: 40%"></canvas>
+                                <canvas id="myChart"
+                                    style="max-width: 100%; height: 100%; margin-left: 40%"></canvas>
                             </div>
                             <div class="mt-4 text-center">
                                 <span class="text-sm text-gray-600">Data updated as of
@@ -309,7 +344,8 @@
 
                 </div>
                 <div class="bottom-page">
-                    <div class="body-text" style=" margin-left: 40%">Copyright © 2024 K.AHESANALI All rights reserved </div>
+                    <div class="body-text" style=" margin-left: 40%">Copyright © 2024 K.AHESANALI All rights reserved
+                    </div>
                 </div>
             </div>
         </div>
@@ -320,23 +356,25 @@
             const myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Users', 'Categories', 'Recipes', 'Reviews'],
+                    labels: ['Users', 'Categories', 'Recipes', 'Reviews', 'units'],
                     datasets: [{
                         label: 'Counts',
                         data: [{{ $users }}, {{ $category }}, {{ $recipes }},
-                            {{ $reviews }}
+                            {{ $reviews }} , {{ $units }}
                         ],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.2)',
                             'rgba(153, 102, 255, 0.2)',
                             'rgba(255, 159, 64, 0.2)',
                             'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
                         ],
                         borderColor: [
                             'rgba(75, 192, 192, 1)',
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)',
                             'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
                         ],
                         borderWidth: 1
                     }]

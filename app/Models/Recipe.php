@@ -51,4 +51,8 @@ class Recipe extends Model
     {
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps(); // Replace 'favorites' with your actual pivot table name
     }
+    public function units()
+    {
+        return $this->hasMany(Units::class);
+    }
 }

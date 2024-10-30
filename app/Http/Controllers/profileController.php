@@ -9,6 +9,7 @@ use App\Models\Profile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class profileController extends Controller
@@ -32,12 +33,10 @@ class profileController extends Controller
         $profile = $user->profile; // Assuming there's a relation to a Profile model
         // Eager load recipes along with their favorite count
         $recipes = Recipe::where('user_id', $user->id)
-            ->withCount('favorites') // This will load the count of favorites for each recipe
+            ->withCount('favorites', 'reviews') // This will load the count of favorites for each recipe
             ->get();
         return view('profile.show', compact('user', 'profile', 'recipes'));
     }
-
-
     public function index()
     {
         $user = Auth::user();
@@ -45,7 +44,7 @@ class profileController extends Controller
 
         // Use withCount to get the favorites count
         // Eager load the favorites count
-        $recipes = Recipe::withCount('favorites')->where('user_id', $user->id)->get();
+        $recipes = Recipe::withCount('favorites', 'reviews')->where('user_id', $user->id)->get();
 
         if ($profile) {
             return view('profile.show', compact('profile', 'recipes'));
@@ -53,7 +52,6 @@ class profileController extends Controller
             return view('profile.show', compact('profile', 'recipes'));
         }
     }
-
 
     public function create()
     {
@@ -156,5 +154,30 @@ class profileController extends Controller
 
             return redirect()->back()->with('error', 'An error occurred while updating the profile. Please try again.');
         }
+    }
+    /**
+     * Handle the password change request.
+     */
+    public function changePassword(Request $request)
+    {
+        // Step 1: Validate the input
+        $request->validate([
+            'current_password' => 'required',        // User must provide the current password
+            'new_password' => 'required|min:4|confirmed', // New password must be at least 8 characters and match confirmation
+        ]);
+
+        // Step 2: Check if the current password is correct
+        $currentPassword = $request->current_password;   // Get current password from the request
+        $userPassword = Auth::user()->password;          // Get current user's hashed password from the database
+
+        if (!Hash::check($currentPassword, $userPassword)) {
+            // If current password doesn't match, send back an error
+            return back()->withErrors(['current_password' => 'Your current password is incorrect.']);
+        }
+
+        User::whare('id', Auth::user()->id)->update(['passowrd' => Hash::make($request->new_password)]);                                    // Save the updated password to the database
+
+        // Step 4: Send a success message
+        return back()->with('success', 'Password updated successfully!');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Recipe;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Review;
+use App\Models\Units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,8 +20,9 @@ class RecipeController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $units = Units::all();
 
-        return view('recipe-add', compact('categories'));
+        return view('recipe-add', compact('categories', 'units'));
     }
     // public function showList()
     // {
@@ -56,6 +58,7 @@ class RecipeController extends Controller
 
     public function addRecipe(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -101,15 +104,17 @@ class RecipeController extends Controller
                     'name' => $name,
                     'quantity' => (int) $request->quantity[$index],
                     'recipe_id' => $recipe->id,
+                    'unit_id' => $request->unit_id[$index]
                 ];
             }
+            // dd($recipe);
             Ingredient::insert($ingredient_arr);
-
             DB::commit(); // Commit the transaction
 
             return redirect('recipe-list')->with('success', 'Recipe added successfully.');
         } catch (\Exception $e) {
             DB::rollback(); // Rollback on error
+            dd($e);
             return redirect('recipe-add')->with('error', 'Failed to add recipe: ' . $e->getMessage());
         }
     }
@@ -118,14 +123,18 @@ class RecipeController extends Controller
 
     public function editRecipe($id)
     {
-        $recipe = Recipe::with('ingredients')->find($id);
+        $recipe = Recipe::with('ingredients')->find($id); // Adjusted to load the associated unit for each ingredient
         $categories = Category::all();
+        $units = Units::all();
 
-        return view('recipe-edit', compact('recipe', 'categories'));
+        // dd($recipe->ingredients[0]->unit_id);
+        return view('recipe-edit', compact('recipe', 'categories',  'units'));
     }
+
 
     public function updateRecipe(Request $request, $id)
     {
+        // dd($request->all());
         DB::beginTransaction(); // Start the transaction
         try {
             $recipe = Recipe::find($id);
@@ -158,10 +167,10 @@ class RecipeController extends Controller
                     'name' => $name,
                     'quantity' => (int) $request->quantity[$index],
                     'recipe_id' => $recipe->id,
+                    'unit_id' => $request->unit_id[$index] // Adjusted to use the unit_id from the request instead of loading them from the database again.
                 ];
             }
             Ingredient::insert($ingredient_arr);
-
             DB::commit(); // Commit the transaction
 
             if (Auth::user()->role == 'admin') {
@@ -170,23 +179,11 @@ class RecipeController extends Controller
                 return redirect('profile')->with('success', 'Recipe updated successfully.');
             }
         } catch (\Exception $e) {
+            dd($e);
             DB::rollback(); // Rollback on error
             return redirect('recipe-edit/' . $id)->with('error', 'Failed to update recipe: ' . $e->getMessage());
         }
     }
-
-
-    // public function deleteRecipe($id)
-    // {
-    //     $recipe = Recipe::find($id);
-    //     $recipe->delete(); // This will automatically delete ingredients due to cascade delete
-
-    //     if (Auth::user()->role == 'admin') {
-    //         return redirect('recipe-list')->with('success', 'Recipe Delete successfully.');
-    //     } else {
-    //         return redirect('profile')->with('success', 'Recipe Delete successfully.');
-    //     }
-    // }
     public function deleteRecipe($id, Request $request)
     {
         $recipe = Recipe::find($id);
@@ -239,9 +236,8 @@ class RecipeController extends Controller
     public function showRecipe($id)
     {
         // Find the recipe by its ID with the related category and ingredients
-        $recipe = Recipe::with('category', 'ingredients')->find($id);
+        $recipe = Recipe::with('category', 'ingredients.units')->find($id);
         // dd($recipe);
-        // Pass the recipe data to the view
 
         return view('recipe-show', compact('recipe'));
     }
@@ -250,11 +246,12 @@ class RecipeController extends Controller
     {
         // Find the recipe by its ID with the related category and ingredients
         $recipe = Recipe::with('category', 'ingredients')->find($id);
+        $units = Units::all();
         // dd($recipe);
 
 
         // Pass the recipe data to the view
-        return view('recipe-show', compact('recipe'));
+        return view('recipe-show', compact('recipe', 'units'));
     }
     public function homeRecipe(Request $request)
     {
@@ -295,6 +292,8 @@ class RecipeController extends Controller
                     'name' => $name,
                     'quantity' => (int) $request->quantity[$index], // Cast quantity to int
                     'recipe_id' => $recipe->id, // Associate with the recipe
+                    'unit_id' => $request->unit_id[$index]
+
                 ];
             }
 
@@ -302,14 +301,15 @@ class RecipeController extends Controller
             Ingredient::insert($ingredient_arr);
             return redirect('home')->with('success', 'Recipe added successfully.');
         } catch (\Exception $e) {
+            dd($e);
             return redirect('recipe-add')->with('error', 'Failed to add recipe.');
         }
     }
-    public function showreviews($id)
-    {
-        $recipe = Recipe::findOrFail($id);
-        return view('show-reviews', compact('recipe'));
-    }
+    // public function showreviews($id)
+    // {
+    //     $recipe = Recipe::findOrFail($id);
+    //     return view('show-reviews', compact('recipe'));
+    // }
 
     public function toggleFavorite($id)
     {
@@ -342,19 +342,18 @@ class RecipeController extends Controller
     public function explore(Request $request)
     {
         $search = $request->input('search');
-        $categories = Category::with('recipes.user', 'recipes.favorites')->get();
 
-        // If you want to filter recipes based on search
-        if ($search) {
-            foreach ($categories as $category) {
-                $category->recipes = $category->recipes->filter(function ($recipe) use ($search) {
-                    return str_contains($recipe->title, $search);
-                });
+        // Query categories with their recipes, filtering recipes by title if a search term is provided
+        $categories = Category::with(['recipes' => function ($query) use ($search) {
+            if ($search) {
+                $query->where('title', 'like', '%' . $search . '%');
             }
-        }
+        }, 'recipes.user', 'recipes.favorites'])
+            ->get();
 
         return view('explore', compact('categories'));
     }
+
     public function pinRecipe($id)
     {
         $recipe = Recipe::findOrFail($id);

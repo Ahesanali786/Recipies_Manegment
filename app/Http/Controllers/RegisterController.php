@@ -31,24 +31,30 @@ class RegisterController extends Controller
             return redirect()->back()->with('error', 'Failed to register user');
         }
     }
-
-
-
-    function login(Request $request)
+    public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            // Log in the user
-            Auth::login($user);
+        if ($user) {
+            // Check if user is blocked
+            if ($user->is_blocked) {
+                return redirect()->back()->with('error', 'Your account has been blocked. Please contact support.');
+            }
 
-            return redirect('home');
+            // Check if password is correct
+            if (Hash::check($request->password, $user->password)) {
+                // Log in the user
+                Auth::login($user);
+
+                return redirect('home');
+            } else {
+                return redirect()->back()->with('error', 'Invalid Credential');
+            }
         } else {
-            // dd('User not found');
-
-            return redirect()->back()->with('error', 'Invalid Credential');
+            return redirect()->back()->with('error', 'User not found');
         }
     }
+
     function logout()
     {
 
