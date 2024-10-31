@@ -139,7 +139,6 @@
     .recipe-title a:hover {
         text-decoration: underline;
     }
-
 </style>
 </style>
 
@@ -176,8 +175,6 @@
                             <button id="theme-toggle" class="btn btn-light" title="Toggle Dark/Light Mode">
                                 <i class="bi bi-moon" id="theme-icon"></i>
                             </button>
-
-                            <!-- Profile Icon with Dropdown -->
                             <div class="dropdown ml-2">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"
                                     style="text-decoration: none;">
@@ -195,12 +192,12 @@
                                         <i class="fa fa-plus"></i> Add Recipes
                                     </a>
                                     @if (Auth::user()->role == 'admin')
-                                        <a class="dropdown-item" href="dashboard">
+                                        <a class="dropdown-item" href="{{ url('dashboard') }}">
                                             <i class="fa fa-tachometer"></i> Dashboard
                                         </a>
                                     @endif
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="logout">
+                                    <a class="dropdown-item text-danger" href="{{ url('logout') }}">
                                         <i class="fa fa-sign-out"></i> Logout
                                     </a>
                                 </div>
@@ -414,8 +411,7 @@
                                 </p>
 
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <button class="btn favorite-btn me-10"
-                                        data-recipe-id="{{ $recipe->id }}">
+                                    <button class="btn favorite-btn me-10" data-recipe-id="{{ $recipe->id }}">
                                         @if ($recipe->favorites->contains(Auth::id()))
                                             <i class="fa fa-heart"></i>
                                         @else

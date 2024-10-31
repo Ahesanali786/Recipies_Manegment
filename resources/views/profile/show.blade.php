@@ -253,6 +253,12 @@
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ url('account-info') }}">
+                            <i class="fas fa-user-circle me-2"></i> <!-- Updated icon -->
+                            Account Info
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item d-flex align-items-center" href="{{ url('favorite-recipes') }}">
                             <i class="fas fa-heart me-2"></i> Favorite Recipes
                         </a>
@@ -387,12 +393,12 @@
                 <p style="color: #6c757d; font-size: 1.1rem;">
                     It seems like you haven't set up your profile yet.
                 </p>
-                @if (Auth::user()->id === $user->id)
-                    <a href="{{ route('profile.create') }}" class="btn btn-success btn-lg mt-3"
-                        style="border-radius: 30px; padding: 10px 20px;">
-                        <i class="fas fa-user-plus"></i> Create Profile
-                    </a>
-                @endif
+                @if (Auth::check() && Auth::user()->id === $user->id)
+                <a href="{{ route('profile.create') }}" class="btn btn-success btn-lg mt-3"
+                    style="border-radius: 30px; padding: 10px 20px;">
+                    <i class="fas fa-user-plus"></i> Create Profile
+                </a>
+            @endif
             </div>
         @endif
     </div>

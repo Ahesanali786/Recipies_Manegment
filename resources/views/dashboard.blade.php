@@ -133,7 +133,12 @@
                                         <div class="text">Users</div>
                                     </a>
                                 </li>
-
+                                <li class="menu-item">
+                                    <a href="{{ route('users.all_profile') }}" class="">
+                                        <div class="icon"> <i class="fas fa-user"></i></div>
+                                        <div class="text">Users-Profiles</div>
+                                    </a>
+                                </li>
                                 <li class="menu-item">
                                     <a href="logout" class="">
                                         <div class="icon"><i class="fas fa-sign-out-alt"></i></div>

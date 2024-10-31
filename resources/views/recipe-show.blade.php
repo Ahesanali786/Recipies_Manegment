@@ -167,6 +167,83 @@
                 margin-bottom: 10px;
             }
         }
+
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header h4 {
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .user-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .review {
+            padding: 15px 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .rating-box {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .rating-red {
+            background-color: #f44336;
+            /* Red */
+        }
+
+        .rating-yellow {
+            background-color: #ffeb3b;
+            /* Yellow */
+            color: #333;
+        }
+
+        .rating-green {
+            background-color: #4caf50;
+            /* Green */
+        }
+
+        .review-comment {
+            font-size: 0.95rem;
+            color: #555;
+            margin-top: 5px;
+            margin-left: 58px;
+            /* Aligned with avatar and name */
+        }
+
+        .text-muted.small {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 90%;
+            margin-right: 10px;
+
+        }
     </style>
 </head>
 
@@ -280,15 +357,32 @@
             </div>
             <div class="card-body">
                 @foreach ($recipe->reviews as $review)
-                    <div class="review mb-3">
-                        <strong>{{ $review->user ? $review->user->name : 'User undefined' }}</strong>
-                        <div class="rating-stars">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <i class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}"
-                                    aria-hidden="true"></i>
-                            @endfor
+                    <div class="review mb-4">
+                        <!-- User Profile Picture and Name -->
+                        <div class="d-flex align-items-center mb-2">
+                            <!-- User Avatar -->
+
+
+                            <!-- User Name and Date -->
+                            <div>
+                                <img src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
+                                    alt="User Avatar" class="user-avatar me-3" style="width: 40px; height: 40px;">
+                                <strong
+                                    class="user-name">{{ $review->user ? $review->user->name : 'User undefined' }}</strong>
+                            </div>
+
+                            <!-- Rating Box -->
+
                         </div>
-                        <p>{{ $review->comment }}</p>
+                        <div class="rating-box ms-auto {{ $review->rating <= 2 ? 'rating-red' : ($review->rating <= 3 ? 'rating-yellow' : 'rating-green') }}">
+                            <span>{{ number_format($review->rating, 1) }}</span> <i class="fa fa-star"
+                                aria-hidden="true"></i>
+
+                            </div>
+                            <div class="text-muted small">Posted on {{ $review->created_at->format('j M Y') }}
+                            </div>
+                        <!-- Review Comment -->
+                        <p class="review-comment">{{ $review->comment }}</p>
                     </div>
                 @endforeach
 

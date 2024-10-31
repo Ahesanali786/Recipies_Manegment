@@ -30,6 +30,7 @@ class profileController extends Controller
     public function showProfile($id)
     {
         $user = User::findOrFail($id);
+        // dd($user);
         $profile = $user->profile; // Assuming there's a relation to a Profile model
         // Eager load recipes along with their favorite count
         $recipes = Recipe::where('user_id', $user->id)
@@ -47,9 +48,9 @@ class profileController extends Controller
         $recipes = Recipe::withCount('favorites', 'reviews')->where('user_id', $user->id)->get();
 
         if ($profile) {
-            return view('profile.show', compact('profile', 'recipes'));
+            return view('profile.show', compact('profile', 'recipes', 'user'));
         } else {
-            return view('profile.show', compact('profile', 'recipes'));
+            return view('profile.show', compact('profile', 'recipes', 'user'));
         }
     }
 
@@ -179,5 +180,48 @@ class profileController extends Controller
 
         // Step 4: Send a success message
         return back()->with('success', 'Password updated successfully!');
+    }
+    public function indexprofile()
+    {
+        // Fetch all profiles with the related user
+        $profiles = Profile::with('user')->get();
+        return view('users.all_profile', compact('profiles'));
+    }
+    // Add this method in your profileController
+
+    public function accountInfo()
+    {
+        $user = Auth::user(); // Get the currently authenticated user
+        $profile = $user->profile; // Fetch the user's profile
+
+        return view('profile.account_info', compact('user', 'profile'));
+    }
+    // Delete the profile
+    public function destroy($id)
+    {
+        // Start a database transaction
+        DB::beginTransaction();
+
+        try {
+            $profile = Profile::findOrFail($id); // Fetch the profile using the provided ID
+
+            // If the profile has a picture, delete it from storage
+            if ($profile->profile_picture) {
+                Storage::disk('public')->delete($profile->profile_picture);
+            }
+
+            // Delete the profile from the database
+            $profile->delete();
+
+            // Commit the transaction if successful
+            DB::commit();
+
+            return redirect()->route('profile.index')->with('success', 'Profile deleted successfully!');
+        } catch (\Throwable $th) {
+            // Rollback the transaction in case of error
+            DB::rollback();
+
+            return redirect()->back()->with('error', 'An error occurred while deleting the profile. Please try again.');
+        }
     }
 }

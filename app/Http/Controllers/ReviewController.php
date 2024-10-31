@@ -28,7 +28,7 @@ class ReviewController extends Controller
                 'comment' => $request->comment,
             ]);
 
-            return redirect('home')->with('success', 'Review added successfully.');
+            return redirect()->back()->with('success', 'Review added successfully.');
         } else {
             return redirect()->back()->with('error', 'Recipe not found.');
         }
