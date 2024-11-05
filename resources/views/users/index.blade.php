@@ -11,6 +11,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -59,6 +61,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
     <script>
         // Check if there's a 'status' session message
@@ -92,6 +96,7 @@
                     <th>Name</th>
                     <th>Role</th>
                     <th>Email</th>
+                    <th>Email verify</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -106,6 +111,13 @@
                         </td>
                         <td>{{ $user->role }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>
+                            @if($user->email_verified_at)
+                                Yes
+                            @else
+                                Pending
+                            @endif
+                        </td>
                         <td>
                             @if ($user->role !== 'admin')
                                 <form action="{{ route('users.toggleBlock', $user->id) }}" method="POST">
@@ -122,12 +134,24 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center">No users found.</td>
+                        <td colspan="6" class="text-center">No users found.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('.table').DataTable({
+                "order": [[ 0, "asc" ]], // Sort by ID ascending by default
+                "responsive": true, // Make the table responsive
+                "lengthMenu": [2,5, 10, 25, 50], // Options for number of records to display
+                "pageLength": 5 // Default records per page
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -8,6 +8,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>#</th>
+                    <th>Id</th>
                     <th>Profile Picture</th>
                     <th>Name</th>
                     <th>Roll</th>
@@ -21,6 +22,7 @@
                 @foreach ($profiles as $profile)
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
+                        <td scope="row">{{ $profile->id }}</td>
                         <td>
                             @if ($profile->profile_picture)
                                 <img src="{{ asset('storage/' . $profile->profile_picture) }}" alt="Profile Picture"
@@ -30,7 +32,8 @@
                                     class="rounded-circle">
                             @endif
                         </td>
-                        <td>{{ $profile->name }}</td>
+                        <td>{{ $profile->name }}
+                        </td>
                         <td>{{ $profile->user->role }}</td>
                         <td>{{ $profile->email }}</td>
                         <td>{{ $profile->bio ?? 'N/A' }}</td>

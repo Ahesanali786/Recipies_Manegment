@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ShareRecipe;
 use App\Models\Recipe;
 use App\Models\Category;
 use App\Models\Ingredient;
@@ -11,7 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Mail;
+use ShareRecipeEmail;
 
 class RecipeController extends Controller
 {
@@ -343,10 +345,13 @@ class RecipeController extends Controller
     {
         $search = $request->input('search');
 
-        // Query categories with their recipes, filtering recipes by title if a search term is provided
+        // Query categories with their recipes, filtering recipes by title or user's name if a search term is provided
         $categories = Category::with(['recipes' => function ($query) use ($search) {
             if ($search) {
-                $query->where('title', 'like', '%' . $search . '%');
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', '%' . $search . '%');
+                    });
             }
         }, 'recipes.user', 'recipes.favorites'])
             ->get();

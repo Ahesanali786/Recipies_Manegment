@@ -124,7 +124,7 @@
                                 <li class="menu-item">
                                     <a href="review" class="">
                                         <div class="icon"><i class="fas fa-star"></i></div>
-                                        <div class="text">Reviews</div>
+                                        <di class="text">Reviews</di>
                                     </a>
                                 </li>
                                 <li class="menu-item">
@@ -365,7 +365,7 @@
                     datasets: [{
                         label: 'Counts',
                         data: [{{ $users }}, {{ $category }}, {{ $recipes }},
-                            {{ $reviews }} , {{ $units }}
+                            {{ $reviews }}, {{ $units }}
                         ],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.2)',

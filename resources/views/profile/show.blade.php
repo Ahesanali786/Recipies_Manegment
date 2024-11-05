@@ -206,6 +206,48 @@
         .dropdown-item i {
             font-size: 18px;
         }
+        .alert-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        .alert-container img {
+            width: 150px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .alert-message {
+            font-size: 18px;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .add-recipe-btn {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .add-recipe-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -318,73 +360,81 @@
 
             <h3 class="mt-4">My Recipes</h3>
             <div class="recipe-grid">
-                @foreach ($recipes as $recipe)
-                    <div class="recipe-card">
-                        <a href="{{ url('user/user-show/' . $recipe->id) }}">
-                            <img src="{{ asset('webimg/' . $recipe->image) }}" alt="{{ $recipe->title }}"
-                                class="recipe-image">
-                        </a>
-                        <h3 class="recipe-title">{{ $recipe->title }}</h3>
-                        <div class="ratings">
-                            @php
-                                $averageRating = $recipe->reviews()->avg('rating');
-                                $filledStars = floor($averageRating);
-                                $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
-                            @endphp
-
-                            @for ($i = 1; $i <= $filledStars; $i++)
-                                <i class="bi bi-star-fill"></i>
-                            @endfor
-
-                            @if ($halfStar)
-                                <i class="bi bi-star-half"></i>
-                            @endif
-
-                            @for ($i = 1; $i <= 5 - $filledStars - $halfStar; $i++)
-                                <i class="bi bi-star"></i>
-                            @endfor
-                        </div>
-                        <p class="average-rating">
-                            @if ($averageRating)
-                                Average Rating: {{ number_format($averageRating, 1) }} / 5
-                            @else
-                                No ratings yet
-                            @endif
-                        </p>
-                        <div class="recipe-actions">
-                            <span><i class="fa fa-heart"></i> {{ $recipe->favorites_count ?? 0 }} </span>
-                            <span><i class="fa fa-comment"></i> {{ $recipe->reviews_count ?? 0 }} </span>
-                            {{-- <span><i class="fa fa-share-alt"></i> Share</span> --}}
-
-                            @if (Auth::check() && $recipe->user_id === Auth::id())
-                                <div>
-                                    <!-- Pin/Unpin Button -->
-                                    <form action="{{ route('recipe.pin', $recipe->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-warning">
-                                            <i class="fa {{ $recipe->pinned ? 'fa-times' : 'fa-thumbtack' }}"></i>
-                                        </button>
-                                    </form>
-
-                                    <!-- Edit Button -->
-                                    <a href="javascript:void(0)"
-                                        onclick="window.location='{{ url('recipe-edit/' . $recipe->id) }}'"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-
-                                    <!-- Delete Button -->
-                                    <a href="javascript:void(0)"
-                                        onclick="confirmDelete('{{ url('recipe-delete/' . $recipe->id) }}')"
-                                        class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </div>
-                            @endif
-                        </div>
+                @if ($recipes->count() == 0)
+                    <div class="alert-container">
+                        <img src="https://via.placeholder.com/150x150?text=No+Recipes+Yet" alt="No Recipes Yet">
+                        <p class="alert-message">You haven't added any recipes yet.</p>
+                        <a href="{{ url('recipe-add') }}" class="add-recipe-btn">Add Your First Recipe</a>
                     </div>
-                @endforeach
+                @else
+                    @foreach ($recipes as $recipe)
+                        <div class="recipe-card">
+                            <a href="{{ url('user/user-show/' . $recipe->id) }}">
+                                <img src="{{ asset('webimg/' . $recipe->image) }}" alt="{{ $recipe->title }}"
+                                    class="recipe-image">
+                            </a>
+                            <h3 class="recipe-title">{{ $recipe->title }}</h3>
+                            <div class="ratings">
+                                @php
+                                    $averageRating = $recipe->reviews()->avg('rating');
+                                    $filledStars = floor($averageRating);
+                                    $halfStar = $averageRating - $filledStars >= 0.5 ? 1 : 0;
+                                @endphp
+
+                                @for ($i = 1; $i <= $filledStars; $i++)
+                                    <i class="bi bi-star-fill"></i>
+                                @endfor
+
+                                @if ($halfStar)
+                                    <i class="bi bi-star-half"></i>
+                                @endif
+
+                                @for ($i = 1; $i <= 5 - $filledStars - $halfStar; $i++)
+                                    <i class="bi bi-star"></i>
+                                @endfor
+                            </div>
+                            <p class="average-rating">
+                                @if ($averageRating)
+                                    Average Rating: {{ number_format($averageRating, 1) }} / 5
+                                @else
+                                    No ratings yet
+                                @endif
+                            </p>
+                            <div class="recipe-actions">
+                                <span><i class="fa fa-heart"></i> {{ $recipe->favorites_count ?? 0 }} </span>
+                                <span><i class="fa fa-comment"></i> {{ $recipe->reviews_count ?? 0 }} </span>
+                                {{-- <span><i class="fa fa-share-alt"></i> Share</span> --}}
+
+                                @if (Auth::check() && $recipe->user_id === Auth::id())
+                                    <div>
+                                        <!-- Pin/Unpin Button -->
+                                        <form action="{{ route('recipe.pin', $recipe->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-warning">
+                                                <i class="fa {{ $recipe->pinned ? 'fa-times' : 'fa-thumbtack' }}"></i>
+                                            </button>
+                                        </form>
+
+                                        <!-- Edit Button -->
+                                        <a href="javascript:void(0)"
+                                            onclick="window.location='{{ url('recipe-edit/' . $recipe->id) }}'"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+
+                                        <!-- Delete Button -->
+                                        <a href="javascript:void(0)"
+                                            onclick="confirmDelete('{{ url('recipe-delete/' . $recipe->id) }}')"
+                                            class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         @else
             <div class="no-profile text-center">
@@ -394,11 +444,11 @@
                     It seems like you haven't set up your profile yet.
                 </p>
                 @if (Auth::check() && Auth::user()->id === $user->id)
-                <a href="{{ route('profile.create') }}" class="btn btn-success btn-lg mt-3"
-                    style="border-radius: 30px; padding: 10px 20px;">
-                    <i class="fas fa-user-plus"></i> Create Profile
-                </a>
-            @endif
+                    <a href="{{ route('profile.create') }}" class="btn btn-success btn-lg mt-3"
+                        style="border-radius: 30px; padding: 10px 20px;">
+                        <i class="fas fa-user-plus"></i> Create Profile
+                    </a>
+                @endif
             </div>
         @endif
     </div>

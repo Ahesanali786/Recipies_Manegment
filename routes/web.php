@@ -141,3 +141,6 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::get('/recipe-list', [RecipeController::class, 'showList'])->name('recipes.list');
 });
+
+Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('show.otp.form');
+Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('verify.otp');
