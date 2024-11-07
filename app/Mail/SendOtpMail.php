@@ -19,6 +19,9 @@ class SendOtpMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.send_otp')->with('otp', $this->otp);
+        return $this
+            ->from('ahesanalikadiwala88@gmail.com', 'Delicious')
+            ->view('emails.send_otp')
+            ->with('otp', $this->otp);
     }
 }

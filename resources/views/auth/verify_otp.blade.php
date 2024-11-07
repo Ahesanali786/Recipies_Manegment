@@ -97,7 +97,7 @@
             Swal.fire({
                 icon: 'success',
                 title: '<strong>Success!</strong>',
-                html: '<p>{{ session('status') }}</p>',
+                html: '<p>{{ session('success') }}</p>',
                 iconColor: '#4CAF50',
                 background: '#f9f9f9',
                 color: '#333',
@@ -132,7 +132,14 @@
                 <label for="otp">One-Time Password (OTP):</label>
                 <input type="text" id="otp" name="otp" required placeholder="Enter OTP">
             </div>
-
+            <div>
+                <form action="{{ route('resend.otp') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="email" value="{{ old('email') ?? request('email') }}">
+                    <button type="submit" class="btn btn-link">Resend OTP</button>
+                </form>
+            </div>
+            <br>
             <button type="submit">Verify OTP</button>
         </form>
     </div>

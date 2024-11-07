@@ -50,6 +50,7 @@ Route::middleware(CheckUserLogin::class)->group(function () {
     Route::get('/recipe-delete/{id}', [RecipeController::class, 'deleteRecipe']);
     // Route::delete('/recipe-delete/{id}', [RecipeController::class, 'deleteRecipe']);
     Route::delete('/recipe-bulk-delete', [RecipeController::class, 'bulkDelete']);
+    Route::post('/recipe/restore/{id}', [RecipeController::class, 'restoreRecipe'])->name('recipe.restore');
     Route::get('/recipe-show/{id}', [RecipeController::class, 'showRecipe']);
 
     //USER
@@ -109,6 +110,12 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
     });
     Route::view('login', 'login');
     Route::view('error', 'error page.error');
+
+
+    Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('show.otp.form');
+    Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('verify.otp');
+    Route::post('/resend-otp', [RegisterController::class, 'resendOtp'])->name('resend.otp');
+
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
@@ -141,6 +148,6 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::get('/recipe-list', [RecipeController::class, 'showList'])->name('recipes.list');
 });
+// routes/web.php
 
-Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('show.otp.form');
-Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('verify.otp');
+Route::get('/recipe/{id}/download', [RecipeController::class, 'downloadRecipePdf'])->name('recipe.download');

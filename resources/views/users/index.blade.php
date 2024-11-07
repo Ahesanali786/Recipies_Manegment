@@ -51,6 +51,45 @@
         .animate__animated {
             animation-duration: 0.5s;
         }
+
+        .badge {
+            font-size: 1rem;
+            /* Slightly larger font size */
+            padding: 0.5rem 1rem;
+            /* More padding for a better look */
+            border-radius: 0.5rem;
+            /* Rounded corners */
+            text-align: center;
+            /* Center the text within the badge */
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            /* Green background */
+            color: white;
+            /* White text */
+            transition: background-color 0.3s;
+            /* Smooth transition */
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            /* Yellow background */
+            color: black;
+            /* Black text */
+            transition: background-color 0.3s;
+            /* Smooth transition */
+        }
+
+        .badge-success:hover {
+            background-color: #218838;
+            /* Darker green on hover */
+        }
+
+        .badge-warning:hover {
+            background-color: #e0a800;
+            /* Darker yellow on hover */
+        }
     </style>
 </head>
 
@@ -111,11 +150,11 @@
                         </td>
                         <td>{{ $user->role }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>
-                            @if($user->email_verified_at)
-                                Yes
+                        <td class="text-center">
+                            @if ($user->email_verified_at)
+                                <span class="badge badge-success">Yes</span>
                             @else
-                                Pending
+                                <span class="badge badge-warning">Pending</span>
                             @endif
                         </td>
                         <td>
@@ -123,7 +162,8 @@
                                 <form action="{{ route('users.toggleBlock', $user->id) }}" method="POST">
                                     @csrf
                                     @method('POST')
-                                    <button type="submit" class="btn btn-{{ $user->is_blocked ? 'danger' : 'secondary' }} btn-sm">
+                                    <button type="submit"
+                                        class="btn btn-{{ $user->is_blocked ? 'danger' : 'secondary' }} btn-sm">
                                         {{ $user->is_blocked ? 'Unblock User' : 'Block User' }}
                                     </button>
                                 </form>
@@ -145,9 +185,11 @@
         $(document).ready(function() {
             // Initialize DataTable
             $('.table').DataTable({
-                "order": [[ 0, "asc" ]], // Sort by ID ascending by default
+                "order": [
+                    [0, "asc"]
+                ], // Sort by ID ascending by default
                 "responsive": true, // Make the table responsive
-                "lengthMenu": [2,5, 10, 25, 50], // Options for number of records to display
+                "lengthMenu": [2, 5, 10, 25, 50], // Options for number of records to display
                 "pageLength": 5 // Default records per page
             });
         });

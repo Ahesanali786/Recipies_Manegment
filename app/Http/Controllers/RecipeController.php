@@ -12,8 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use ShareRecipeEmail;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class RecipeController extends Controller
 {
@@ -188,22 +189,16 @@ class RecipeController extends Controller
     }
     public function deleteRecipe($id, Request $request)
     {
-        $recipe = Recipe::find($id);
-
-        // Check if the recipe exists
-        if (!$recipe) {
-            // Handle recipe not found
-            if ($request->ajax()) {
-                return response()->json(['error' => 'Recipe not found.'], 404);
-            }
-
-            return redirect()->back()->with('error', 'Recipe not found.');
-        }
-
         try {
-            $recipe->delete(); // This will automatically delete related ingredients if set up correctly
+            // Retrieve the recipe with soft delete enabled
+            $recipe = Recipe::findOrFail($id);
 
-            // Handle redirect for non-AJAX requests
+            // Soft delete the recipe
+            $recipe->delete();
+            // Set a flag for the popup to be shown for 5 seconds
+            session()->flash('recently_deleted', $recipe->id);
+
+            // Redirect for non-AJAX requests
             if (!$request->ajax()) {
                 if (Auth::user()->role == 'admin') {
                     return redirect('recipe-list')->with('success', 'Recipe deleted successfully.');
@@ -215,7 +210,7 @@ class RecipeController extends Controller
             // Handle AJAX request response
             return response()->json(['success' => 'Recipe deleted successfully.']);
         } catch (\Exception $e) {
-            // Handle error during deletion
+            // Handle errors, including recipe not found or delete failure
             if ($request->ajax()) {
                 return response()->json(['error' => 'Error deleting recipe: ' . $e->getMessage()], 500);
             }
@@ -223,7 +218,24 @@ class RecipeController extends Controller
             return redirect()->back()->with('error', 'Error deleting recipe: ' . $e->getMessage());
         }
     }
+    public function restoreRecipe($id)
+    {
+        try {
+            $recipe = Recipe::withTrashed()->findOrFail($id);
 
+
+            $recipe->restore();
+
+
+            if (Auth::user()->role == 'admin') {
+                return redirect('recipe-list')->with('success', 'Recipe restored successfully.');
+            } else {
+                return redirect('profile')->with('success', 'Recipe restored successfully.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error restoring recipe: ' . $e->getMessage());
+        }
+    }
     public function bulkDelete(Request $request)
     {
         $selected = $request->input('selected');
@@ -301,7 +313,7 @@ class RecipeController extends Controller
 
             // Insert all ingredients at once
             Ingredient::insert($ingredient_arr);
-            return redirect('home')->with('success', 'Recipe added successfully.');
+            return redirect('profile')->with('success', 'Recipe added successfully.');
         } catch (\Exception $e) {
             dd($e);
             return redirect('recipe-add')->with('error', 'Failed to add recipe.');
@@ -373,5 +385,18 @@ class RecipeController extends Controller
         $recipe->save();
 
         return redirect()->back()->with('success', $recipe->pinned ? 'Recipe pinned successfully!' : 'Recipe unpinned.');
+    }
+    public function downloadRecipePdf($id)
+    {
+        // Recipe ka data retrieve karein
+        $recipe = Recipe::findOrFail($id);
+        $units = Units::all();
+
+        // PDF ke liye ek view ko load karein
+        $pdf = Pdf::loadView('recipes.pdf', compact('recipe', 'units'))
+            ->setPaper('a4'); // Set the paper size to A4
+
+        // PDF ko download karein
+        return $pdf->download('recipe.pdf');
     }
 }

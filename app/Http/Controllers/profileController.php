@@ -32,10 +32,11 @@ class profileController extends Controller
         $user = User::findOrFail($id);
         // dd($user);
         $profile = $user->profile; // Assuming there's a relation to a Profile model
+
         // Eager load recipes along with their favorite count
         $recipes = Recipe::where('user_id', $user->id)
             ->withCount('favorites', 'reviews') // This will load the count of favorites for each recipe
-            ->get();
+            ->get(); //
         return view('profile.show', compact('user', 'profile', 'recipes'));
     }
     public function index()
@@ -45,7 +46,8 @@ class profileController extends Controller
 
         // Use withCount to get the favorites count
         // Eager load the favorites count
-        $recipes = Recipe::withCount('favorites', 'reviews')->where('user_id', $user->id)->get();
+        $recipes = Recipe::withCount('favorites', 'reviews')->where('user_id', $user->id)->withTrashed()->get();
+        // dd($recipes);
 
         if ($profile) {
             return view('profile.show', compact('profile', 'recipes', 'user'));

@@ -10,13 +10,11 @@ use App\Models\Ingredient;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Review;
-use App\Models\Like;
-use App\Models\Dislike;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Recipe extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     public $timestamps = false;
 
     protected $fillable = ['title', 'description', 'preparation_time', 'cooking_time', 'servings', 'category_id', 'user_id', 'pinned'];

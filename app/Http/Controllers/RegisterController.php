@@ -18,8 +18,8 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:4|confirmed',
         ]);
 
         try {
@@ -38,7 +38,7 @@ class RegisterController extends Controller
             $user->save();
 
             // Send OTP email
-            Mail::to($user->email)->send(new SendOtpMail($otp));
+            Mail::to($user->email)->queue(new SendOtpMail($otp)); // Queue the email
 
             DB::commit();
             return redirect()->route('show.otp.form')->with('success', 'OTP has been sent to your email. Please verify to complete registration.');
@@ -63,9 +63,9 @@ class RegisterController extends Controller
         ]);
 
         $user = User::where('email', $request->email)
-                    ->where('otp', $request->otp)
-                    ->where('otp_created_at', '>', Carbon::now()->subMinutes(10)) // OTP valid for 10 minutes
-                    ->first();
+            ->where('otp', $request->otp)
+            ->where('otp_created_at', '>', Carbon::now()->subMinutes(10)) // OTP valid for 10 minutes
+            ->first();
 
         if ($user) {
             // OTP is valid, verify the user
@@ -79,6 +79,32 @@ class RegisterController extends Controller
         } else {
             return redirect()->back()->with('error', 'Invalid or expired OTP.');
         }
+    }
+
+    // Resend OTP Method
+    public function resendOtp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        // Check if the user exists and has not yet verified their email
+        if ($user && !$user->email_verified_at) {
+            // Generate a new OTP
+            $otp = rand(100000, 999999);
+            $user->otp = $otp;
+            $user->otp_created_at = Carbon::now();
+            $user->save();
+
+            // Queue the OTP email
+            Mail::to($user->email)->queue(new SendOtpMail($otp)); // Queue the email
+
+            return redirect()->back()->with('success', 'A new OTP has been sent to your email.');
+        }
+
+        return redirect()->back()->with('error', 'User not found or already verified.');
     }
 
     // Login method
