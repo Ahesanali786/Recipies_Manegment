@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +38,9 @@
         </script>
     @endif
     <div class="container mt-5">
-        <h2 class="text-center">Add Category</h2>
+        <div class="col-sm-6">
+            <h3 class="mb-5">Add Category</h3>
+        </div>
         <form action="category-add" method="post" enctype="multipart/form-data">
             @csrf
             @method('POST')
@@ -55,3 +60,4 @@
 </body>
 
 </html>
+@endsection

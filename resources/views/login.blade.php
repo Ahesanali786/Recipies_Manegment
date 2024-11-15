@@ -98,9 +98,8 @@
                                     document.write(new Date().getFullYear())
                                 </script>,
                                 made with <i class="fa fa-heart" aria-hidden="true"></i> by
-                                <a class="font-weight-bold text-white"
-                                    target="_blank">Creative Tim
-                                for a better web.</a>
+                                <a class="font-weight-bold text-white" target="_blank">Creative Tim
+                                    for a better web.</a>
                             </div>
                         </div>
                     </div>
@@ -127,25 +126,36 @@
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/material-dashboard.min.js?v=3.2.0"></script>
     @if (session('error'))
-    <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-right',
-            iconColor: 'red',
-            customClass: {
-                popup: 'colored-toast'
-            },
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-        });
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-right',
+                iconColor: 'red',
+                customClass: {
+                    popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
 
-        Toast.fire({
-            icon: 'error',
-            title: "{{ session('error') }}"
-        });
-    </script>
+            Toast.fire({
+                icon: 'error',
+                title: "{{ session('error') }}"
+            });
+        </script>
     @endif
+    <script>
+        // Laravel se message lena
+        const message = @json(session('error'));
+
+        if (message) {
+            // SpeechSynthesis API ka use kar ke bolna
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(message);
+            synth.speak(utterance);
+        }
+    </script>
 </body>
 
 </html>

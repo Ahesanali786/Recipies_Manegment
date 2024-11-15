@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,11 +108,11 @@
 
     <script>
         // Check if there's a 'status' session message
-        @if (session('status'))
+        @if (session('success'))
             Swal.fire({
                 icon: 'success',
                 title: '<strong>Success!</strong>',
-                html: '<p>{{ session('status') }}</p>',
+                html: '<p>{{ session('success') }}</p>',
                 iconColor: '#4CAF50',
                 background: '#f9f9f9',
                 color: '#333',
@@ -123,6 +126,17 @@
                 }
             });
         @endif
+    </script>
+    <script>
+        // Laravel se message lena
+        const message = @json(session('success'));
+
+        if (message) {
+            // SpeechSynthesis API ka use kar ke bolna
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(message);
+            synth.speak(utterance);
+        }
     </script>
 
     <div class="container mt-5">
@@ -197,3 +211,4 @@
 </body>
 
 </html>
+@endsection

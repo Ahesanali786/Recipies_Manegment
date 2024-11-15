@@ -123,7 +123,7 @@ class RegisterController extends Controller
 
             if (Hash::check($request->password, $user->password)) {
                 Auth::login($user);
-                return redirect('home');
+                return redirect('home')->with('success', 'login successful');
             } else {
                 return redirect()->back()->with('error', 'Password is incorrect.');
             }

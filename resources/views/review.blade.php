@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +45,10 @@
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Review DataTable</h2>
+        {{-- <h2 class="text-center mb-4">Review DataTable</h2> --}}
+        <div class="col-sm-6">
+            <h3 class="mb-5">All Reviews</h3>
+        </div>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -94,3 +100,4 @@
 </body>
 
 </html>
+@endsection

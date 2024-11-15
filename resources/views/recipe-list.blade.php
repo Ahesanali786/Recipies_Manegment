@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,15 +63,18 @@
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">{{ Auth::user()->role == 'admin' ? 'Recipe Management' : 'View Recipes' }}</h2>
+        <div class="col-sm-6">
+            <h3 class="mb-5">All Recipies List</h3>
+        </div>
+        {{-- <h2 class="text-center">{{ Auth::user()->role == 'admin' ? 'Recipe Management' : 'View Recipes' }}</h2> --}}
 
         <div class="text-right mb-3">
             @if (Auth::user()->role == 'admin')
                 <a href="/recipe-add" class="btn btn-custom"><i class="fa fa-plus"></i> Add Recipe</a>
             @endif
-            <a href="{{ Auth::user()->role == 'admin' ? '/dashboard' : '/home' }}" class="btn btn-secondary">
+            {{-- <a href="{{ Auth::user()->role == 'admin' ? '/dashboard' : '/home' }}" class="btn btn-secondary">
                 <i class="fa fa-arrow-left"></i> Back
-            </a>
+            </a> --}}
             @if (Auth::user()->role == 'admin')
                 <button id="bulkDeleteBtn" class="btn btn-danger" style="display: none;">
                     <i class="fas fa-trash"></i> Delete Selected
@@ -221,3 +227,4 @@
 </body>
 
 </html>
+@endsection

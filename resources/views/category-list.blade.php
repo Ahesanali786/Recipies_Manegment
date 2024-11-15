@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +18,10 @@
 
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Category Table</h2>
+        <div class="col-sm-6">
+            <h3 class="mb-5">All Category</h3>
+        </div>
+        {{-- <h2 class="text-center mb-5 col-sm-6">Category Table</h2> --}}
 
         @if (session('success'))
             <script>
@@ -41,19 +47,31 @@
             </script>
         @endif
 
+        <script>
+            // Laravel se message lena
+            const message = @json(session('success'));
+
+            if (message) {
+                // SpeechSynthesis API ka use kar ke bolna
+                const synth = window.speechSynthesis;
+                const utterance = new SpeechSynthesisUtterance(message);
+                synth.speak(utterance);
+            }
+        </script>
+
         <!-- Back Button -->
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <a href="{{ url()->previous() }}" class="btn btn-secondary">
                 <i class="fa fa-arrow-left"></i> Back
             </a>
-        </div>
+        </div> --}}
 
         <!-- Add Category Button -->
-        <div class="text-right mb-3">
+        {{-- <div class="text-right mb-3">
             <a href="/category-add" class="btn btn-success">
                 <i class="fa fa-plus"></i> Add Category
             </a>
-        </div>
+        </div> --}}
         <!-- Category Table -->
         <table id="recipeTable" class="table table-striped table-bordered">
             <thead>
@@ -97,3 +115,4 @@
 </body>
 
 </html>
+@endsection

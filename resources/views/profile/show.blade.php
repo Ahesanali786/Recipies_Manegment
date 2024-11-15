@@ -276,7 +276,17 @@
             });
         </script>
     @endif
+    <script>
+        // Laravel se message lena
+        const message = @json(session('success'));
 
+        if (message) {
+            // SpeechSynthesis API ka use kar ke bolna
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(message);
+            synth.speak(utterance);
+        }
+    </script>
     <div class="container">
         <a href="{{ url('home') }}" class="btn btn-secondary mb-3">
             <i class="fa fa-arrow-left"></i> Back
@@ -371,24 +381,45 @@
                     @foreach ($recipes as $recipe)
                         @if ($recipe->trashed())
                             @if ($recipe->trashed() && session('recently_deleted') == $recipe->id)
-                                <!-- Popup Modal -->
-                                <div id="restore-popup" class="popup-overlay">
-                                    <div class="popup-container">
-                                        <h4>Are you sure you want to restore this recipe?</h4>
-                                        <form action="{{ route('recipe.restore', $recipe->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success">Restore</button>
-                                        </form>
-                                        <button class="btn btn-secondary close-popup">Cancel</button>
+                                <!-- Bootstrap Modal -->
+                                <div class="modal fade" id="restoreModal" tabindex="-1"
+                                    aria-labelledby="restoreModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="restoreModalLabel">Restore Recipe</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to restore this recipe?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form action="{{ route('recipe.restore', $recipe->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success">Restore</button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
+                                <!-- JavaScript to Open Modal and Close After 5 Seconds -->
                                 <script>
-                                    setTimeout(function() {
-                                        document.getElementById('restore-popup').style.display = 'none';
-                                    }, 5000); // Hide the popup after 5 seconds
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        // Initialize and show the modal
+                                        var restoreModal = new bootstrap.Modal(document.getElementById('restoreModal'));
+                                        restoreModal.show();
+
+                                        // Close the modal after 5 seconds
+                                        setTimeout(function() {
+                                            restoreModal.hide();
+                                        }, 5000);
+                                    });
                                 </script>
-                                {{-- </div> --}}
                             @endif
                         @else
                             <div class="recipe-card">

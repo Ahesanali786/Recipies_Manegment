@@ -143,6 +143,38 @@
 </style>
 
 <body>
+    <script>
+        // Check if there's a 'status' session message
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: '<strong>Success!</strong>',
+                html: '<p>{{ session('success') }}</p>',
+                iconColor: '#4CAF50',
+                background: '#f9f9f9',
+                color: '#333',
+                showCloseButton: true,
+                showConfirmButton: false,
+                timer: 3000,
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            });
+        @endif
+    </script>
+    <script>
+        // Laravel se message lena
+        const message = @json(session('success'));
+
+        if (message) {
+            // SpeechSynthesis API ka use kar ke bolna
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(message);
+            synth.speak(utterance);
+        }
+    </script>
     <!-- Preloader -->
     <div id="preloader">
         <i class="circle-preloader"></i>

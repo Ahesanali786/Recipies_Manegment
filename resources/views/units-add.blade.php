@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +38,9 @@
         </script>
     @endif
     <div class="container mt-5">
-        <h2 class="text-center">Add unit</h2>
+        <div class="col-sm-6">
+            <h3 class="mb-5">Add Units</h3>
+        </div>
         <form action="unit-add" method="post">
             @csrf
             {{-- @method('POST') --}}
@@ -55,3 +60,4 @@
 </body>
 
 </html>
+@endsection

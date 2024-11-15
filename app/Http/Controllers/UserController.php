@@ -33,6 +33,6 @@ class UserController extends Controller
         $user->is_blocked = !$user->is_blocked;
         $user->save();
 
-        return redirect()->back()->with('status', 'User status updated successfully.');
+        return redirect()->back()->with('success', 'User status updated successfully.');
     }
 }

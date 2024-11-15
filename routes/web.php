@@ -115,7 +115,6 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
     Route::get('/verify-otp', [RegisterController::class, 'showOtpForm'])->name('show.otp.form');
     Route::post('/verify-otp', [RegisterController::class, 'verifyOtp'])->name('verify.otp');
     Route::post('/resend-otp', [RegisterController::class, 'resendOtp'])->name('resend.otp');
-
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
@@ -151,3 +150,5 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 // routes/web.php
 
 Route::get('/recipe/{id}/download', [RecipeController::class, 'downloadRecipePdf'])->name('recipe.download');
+
+Route::view('network-error', 'error page.network-error');
