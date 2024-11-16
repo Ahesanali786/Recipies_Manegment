@@ -18,7 +18,7 @@
         .container {
             background-color: #ffffff; /* White background for the table */
             border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow */
             padding: 20px; /* Spacing inside the container */
             margin-top: 20px; /* Spacing from the top */
         }

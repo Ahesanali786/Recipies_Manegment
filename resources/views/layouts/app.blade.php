@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>AdminLTE v4 | Dashboard</title><!--begin::Primary Meta Tags-->
+    <title>Delicious</title><!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="AdminLTE v4 | Dashboard">
     <meta name="author" content="ColorlibHQ">
@@ -41,7 +41,7 @@
                 </ul> <!--end::Start Navbar Links--> <!--begin::End Navbar Links-->
                 <ul class="navbar-nav ms-auto"> <!--begin::Navbar Search-->
                     <li class="nav-item"> <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                            <i class="bi bi-search"></i> </a> </li> <!--end::Navbar Search-->
+                            <i class="bi bi-search"></i> </a> </li>
                     <!--begin::Messages Dropdown Menu-->
                     {{-- <li class="nav-item dropdown"> <a class="nav-link" data-bs-toggle="dropdown" href="#"> <i
                                 class="bi bi-chat-text"></i> <span class="navbar-badge badge text-bg-danger">3</span>
@@ -136,7 +136,7 @@
                             <li class="user-header text-bg-primary"> <img src="admin/img/user2-160x160.jpg"
                                     class="rounded-circle shadow" alt="User Image">
                                 <p>
-                                    Alexander Pierce - Web Developer
+                                   Ahesanali - Admin
                                     <small>Member since Nov. 2023</small>
                                 </p>
                             </li> <!--end::User Image--> <!--begin::Menu Body-->

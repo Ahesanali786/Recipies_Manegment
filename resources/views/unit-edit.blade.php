@@ -1,3 +1,7 @@
+@extends('layouts.app')
+
+<base href="/public">
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,3 +59,4 @@
 </body>
 
 </html>
+@endsection
